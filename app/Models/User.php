@@ -41,4 +41,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Relasi ke tabel laporan
+    public function laporan() {
+        return $this->hasMany(Laporan::class, 'id_user', 'id_user');
+    }
 }
