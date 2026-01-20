@@ -12,4 +12,10 @@ class Kategori extends Model
         'nama_kategori',
         'keterangan',
     ];
+
+    // Relasi ke tabel laporan
+    public function laporan()
+    {
+        return $this->hasMany(Laporan::class, 'id_kategori', 'id_kategori');
+    }
 }
