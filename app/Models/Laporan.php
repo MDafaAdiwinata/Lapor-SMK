@@ -16,4 +16,13 @@ class Laporan extends Model
         'id_user',
         'id_kategori',
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class, 'id_user', 'id_user');
+    }
+
+    public function kategori()
+    {
+        return $this->belongsTo(User::class, 'id_kategori', 'id_kategori');
+    }
 }
