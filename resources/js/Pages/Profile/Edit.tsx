@@ -33,14 +33,14 @@ export default function Edit({
 
             {/* Card Profile */}
             <div className="grid gap-4 md:gap-6 lg:grid-cols-2 xl:grid-cols-3">
-                <Card className="p-6">
+                <Card className="p-6 h-fit">
                     <UpdateProfileInformationForm
                         mustVerifyEmail={mustVerifyEmail}
                         status={status}
                         className="w-full"
                     />
                 </Card>
-                <Card className="p-6">
+                <Card className="p-6 h-fit">
                     <UpdatePasswordForm className="w-full" />
                 </Card>
                 <Card className="p-6 h-fit">
