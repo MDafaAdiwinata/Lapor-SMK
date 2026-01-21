@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Laporan;
 use Illuminate\Database\Eloquent\Model;
 
 class Kategori extends Model
