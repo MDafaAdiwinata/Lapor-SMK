@@ -51,13 +51,13 @@ export default function UpdatePasswordForm({
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">
-                    Update Password
+                <h2 className="text-lg font-medium text-black">
+                    Ubah Password
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600">
-                    Ensure your account is using a long, random password to stay
-                    secure.
+                <p className="mt-1 text-sm md:text-md text-black/80 font-light">
+                    Pastikan akun Anda menggunakan kata sandi yang panjang dan
+                    acak agar tetap aman.
                 </p>
             </header>
 
@@ -65,7 +65,7 @@ export default function UpdatePasswordForm({
                 <div>
                     <InputLabel
                         htmlFor="current_password"
-                        value="Current Password"
+                        value="Kata Sandi Saat Ini"
                     />
 
                     <TextInput
@@ -73,7 +73,7 @@ export default function UpdatePasswordForm({
                         ref={currentPasswordInput}
                         value={data.current_password}
                         onChange={(e) =>
-                            setData('current_password', e.target.value)
+                            setData("current_password", e.target.value)
                         }
                         type="password"
                         className="mt-1 block w-full"
@@ -87,13 +87,13 @@ export default function UpdatePasswordForm({
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="password" value="New Password" />
+                    <InputLabel htmlFor="password" value="Buat Kata Sandi Baru" />
 
                     <TextInput
                         id="password"
                         ref={passwordInput}
                         value={data.password}
-                        onChange={(e) => setData('password', e.target.value)}
+                        onChange={(e) => setData("password", e.target.value)}
                         type="password"
                         className="mt-1 block w-full"
                         autoComplete="new-password"
@@ -105,14 +105,14 @@ export default function UpdatePasswordForm({
                 <div>
                     <InputLabel
                         htmlFor="password_confirmation"
-                        value="Confirm Password"
+                        value="Konfirmasi Kata Sandi"
                     />
 
                     <TextInput
                         id="password_confirmation"
                         value={data.password_confirmation}
                         onChange={(e) =>
-                            setData('password_confirmation', e.target.value)
+                            setData("password_confirmation", e.target.value)
                         }
                         type="password"
                         className="mt-1 block w-full"
@@ -126,7 +126,7 @@ export default function UpdatePasswordForm({
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                    <PrimaryButton disabled={processing}>Simpan</PrimaryButton>
 
                     <Transition
                         show={recentlySuccessful}
@@ -135,8 +135,8 @@ export default function UpdatePasswordForm({
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600">
-                            Saved.
+                        <p className="text-sm md:text-md text-black/60">
+                            Disimpan 🥳
                         </p>
                     </Transition>
                 </div>

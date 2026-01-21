@@ -2,7 +2,7 @@
 
 import { SidebarIcon } from "lucide-react"
 
-import { SearchForm } from "@/components/search-form"
+import { SearchForm } from "@/Components/search-form"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,10 +10,10 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import { useSidebar } from "@/components/ui/sidebar"
+} from "@/Components/ui/breadcrumb"
+import { Button } from "@/Components/ui/button"
+import { Separator } from "@/Components/ui/separator"
+import { useSidebar } from "@/Components/ui/sidebar"
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar()
