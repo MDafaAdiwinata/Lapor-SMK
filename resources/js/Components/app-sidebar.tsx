@@ -1,188 +1,197 @@
-"use client"
-
-import * as React from "react"
+import * as React from "react";
 import {
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  LifeBuoy,
-  Map,
-  PieChart,
-  Send,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react"
+    FileText,
+    Home,
+    History,
+    User,
+    Users,
+    CheckCircle,
+    Settings2,
+    PieChart,
+    GalleryVerticalEnd,
+} from "lucide-react";
 
-import { NavMain } from "@/Components/nav-main"
-import { NavProjects } from "@/Components/nav-projects"
-import { NavSecondary } from "@/Components/nav-secondary"
-import { NavUser } from "@/Components/nav-user"
+import { NavMain } from "@/Components/nav-main";
+import { NavUser } from "@/Components/nav-user";
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/Components/ui/sidebar"
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarHeader,
+    SidebarRail,
+    useSidebar,
+} from "@/Components/ui/sidebar";
+import { usePage } from "@inertiajs/react";
 
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
-    {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
+// Data untuk User/Siswa
+const userNavData = {
+    navMain: [
         {
-          title: "History",
-          url: "#",
+            title: "Dashboard",
+            url: "/dashboard",
+            icon: Home,
+            isActive: true,
         },
         {
-          title: "Starred",
-          url: "#",
+            title: "Buat Laporan",
+            url: "/laporan/create",
+            icon: FileText,
+            items: [
+                {
+                    title: "Form Laporan",
+                    url: "/laporan/create",
+                },
+                {
+                    title: "Draft Laporan",
+                    url: "/laporan/draft",
+                },
+            ],
         },
         {
-          title: "Settings",
-          url: "#",
+            title: "Riwayat Laporan",
+            url: "/laporan/history",
+            icon: History,
+            items: [
+                {
+                    title: "Semua Laporan",
+                    url: "/laporan/history",
+                },
+                {
+                    title: "Menunggu",
+                    url: "/laporan/history?status=pending",
+                },
+                {
+                    title: "Diproses",
+                    url: "/laporan/history?status=processing",
+                },
+                {
+                    title: "Selesai",
+                    url: "/laporan/history?status=completed",
+                },
+            ],
         },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
+    ],
+};
+
+// Data untuk Admin
+const adminNavData = {
+    navMain: [
         {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
+            title: "Dashboard",
+            url: "/admin/dashboard",
+            icon: Home,
+            isActive: true,
         },
         {
-          title: "Tutorials",
-          url: "#",
+            title: "Kelola Laporan",
+            url: "/admin/laporan",
+            icon: FileText,
+            items: [
+                {
+                    title: "Semua Laporan",
+                    url: "/admin/laporan",
+                },
+                {
+                    title: "Menunggu Verifikasi",
+                    url: "/admin/laporan?status=pending",
+                },
+                {
+                    title: "Sedang Diproses",
+                    url: "/admin/laporan?status=processing",
+                },
+                {
+                    title: "Selesai",
+                    url: "/admin/laporan?status=completed",
+                },
+                {
+                    title: "Ditolak",
+                    url: "/admin/laporan?status=rejected",
+                },
+            ],
         },
         {
-          title: "Changelog",
-          url: "#",
+            title: "Manajemen User",
+            url: "/admin/users",
+            icon: Users,
+            items: [
+                {
+                    title: "Semua User",
+                    url: "/admin/users",
+                },
+                {
+                    title: "Siswa",
+                    url: "/admin/users?role=student",
+                },
+                {
+                    title: "Admin",
+                    url: "/admin/users?role=admin",
+                },
+            ],
         },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  navSecondary: [
-    {
-      title: "Support",
-      url: "#",
-      icon: LifeBuoy,
-    },
-    {
-      title: "Feedback",
-      url: "#",
-      icon: Send,
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
+    ],
+};
+
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+    role?: "user" | "admin";
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  return (
-    <Sidebar
-      className="top-[--header-height] !h-[calc(100svh-var(--header-height))]"
-      {...props}
-    >
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <a href="#">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <Command className="size-4" />
-                </div>
+// Komponen Header yang menggunakan useSidebar hook
+function SidebarHeaderContent({ role }: { role: "user" | "admin" }) {
+    const { state } = useSidebar();
+    const isCollapsed = state === "collapsed";
+
+    return (
+        <div
+            className={`flex items-center gap-2 py-3 transition-all duration-200 ${
+                isCollapsed ? "px-0 justify-center" : "px-4"
+            }`}
+        >
+            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                <GalleryVerticalEnd className="size-4" />
+            </div>
+            {!isCollapsed && (
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Acme Inc</span>
-                  <span className="truncate text-xs">Enterprise</span>
+                    <span className="truncate font-bold">Lapor SMK</span>
+                    <span className="truncate text-xs text-muted-foreground">
+                        {role === "admin" ? "Admin Panel" : "Portal Siswa"}
+                    </span>
                 </div>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
-      </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
-    </Sidebar>
-  )
+            )}
+        </div>
+    );
+}
+
+export function AppSidebar({ role = "user", ...props }: AppSidebarProps) {
+    const { auth } = usePage().props as any;
+    const user = auth.user;
+
+    // Pilih data berdasarkan role
+    const data = role === "admin" ? adminNavData : userNavData;
+
+    return (
+        <Sidebar collapsible="icon" {...props}>
+            {/* Header, Logo Web */}
+            <SidebarHeader>
+                <SidebarHeaderContent role={role} />
+            </SidebarHeader>
+
+            {/* NAVIGATION MENU */}
+            <SidebarContent>
+                <NavMain items={data.navMain} />
+            </SidebarContent>
+
+            {/* USER INFO & DROPDOWN */}
+            <SidebarFooter>
+                <NavUser
+                    user={{
+                        nama_user: user.nama_user,
+                        email: user.email,
+                        avatar: `/avatars/${user.id}.jpg`,
+                    }}
+                />
+            </SidebarFooter>
+
+            <SidebarRail />
+        </Sidebar>
+    );
 }
