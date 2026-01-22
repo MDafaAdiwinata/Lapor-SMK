@@ -1,13 +1,14 @@
 <?php
 
 use Inertia\Inertia;
+use App\Models\Kategori;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\DashboardController;
-use App\Models\Kategori;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
