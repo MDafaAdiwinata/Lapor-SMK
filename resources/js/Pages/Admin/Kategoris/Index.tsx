@@ -43,7 +43,7 @@ export default function Index() {
         if (
             confirm(`Apakah yakin ingin menghapus kategori "${nama_kategori}"?`)
         ) {
-            destroy(route("kategori.destroy", id_kategori));
+            destroy(route("kategoris.destroy", id_kategori));
         }
     };
 
@@ -139,8 +139,8 @@ export default function Index() {
                                                 </Link>
                                             </Button>
                                             <Button
+                                                className="rounded- shadow-none rounded-xl"
                                                 variant="destructive"
-                                                className="rounded-xl shadow-none"
                                                 disabled={processing}
                                                 onClick={() =>
                                                     handleDelete(

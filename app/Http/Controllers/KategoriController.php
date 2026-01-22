@@ -60,4 +60,11 @@ class KategoriController extends Controller
 
         return redirect()->route('kategoris.index')->with('message', 'Kategori Laporan berhasil di ubah! 🤩');
     }
+
+    // Delete data
+    public function destroy(Kategori $kategori)
+    {
+        $kategori->delete();
+        return redirect()->route('kategoris.index')->with('message', 'Kategori Laporan berhasil dihapus! 🤩');
+    }
 }
