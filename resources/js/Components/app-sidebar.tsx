@@ -9,6 +9,7 @@ import {
     Settings2,
     PieChart,
     GalleryVerticalEnd,
+    ChartBarStacked
 } from "lucide-react";
 
 import { NavMain } from "@/Components/nav-main";
@@ -83,50 +84,22 @@ const adminNavData = {
             isActive: true,
         },
         {
-            title: "Kelola Laporan",
-            url: "/admin/laporan",
-            icon: FileText,
-            items: [
-                {
-                    title: "Semua Laporan",
-                    url: "/admin/laporan",
-                },
-                {
-                    title: "Menunggu Verifikasi",
-                    url: "/admin/laporan?status=pending",
-                },
-                {
-                    title: "Sedang Diproses",
-                    url: "/admin/laporan?status=processing",
-                },
-                {
-                    title: "Selesai",
-                    url: "/admin/laporan?status=completed",
-                },
-                {
-                    title: "Ditolak",
-                    url: "/admin/laporan?status=rejected",
-                },
-            ],
-        },
-        {
-            title: "Manajemen User",
+            title: "Kelola User",
             url: "/admin/users",
             icon: Users,
-            items: [
-                {
-                    title: "Semua User",
-                    url: "/admin/users",
-                },
-                {
-                    title: "Siswa",
-                    url: "/admin/users?role=student",
-                },
-                {
-                    title: "Admin",
-                    url: "/admin/users?role=admin",
-                },
-            ],
+            isActive: true,
+        },
+        {
+            title: "Kelola Kategori",
+            url: "/admin/kategoris",
+            icon: ChartBarStacked,
+            isActive: true,
+        },
+        {
+            title: "Kelola Laporan",
+            url: "/admin/laporans",
+            icon: FileText,
+            isActive: true,
         },
     ],
 };
