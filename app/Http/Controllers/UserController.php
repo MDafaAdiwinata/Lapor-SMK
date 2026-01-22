@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::lazy();
         return Inertia::render('Admin/Users/Index', [
             'users' => $users,
         ]);
@@ -86,5 +86,12 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('users.index')->with('message', 'User berhasil di ubah! 🤩');
+    }
+
+    // Delete data
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return redirect()->route('users.index')->with('message', 'User berhasil dihapus! 🤩');
     }
 }
