@@ -49,9 +49,11 @@ export default function Index({ users }: any) {
             breadcrumbs={[{ label: "Kelola User" }]}
             header={
                 <div>
-                    <h1 className="text-2xl font-bold">Kelola User</h1>
-                    <p className="text-sm text-muted-foreground">
-                        Manajemen data user sistem
+                    <h1 className="text-2xl md:-ms-0.5 font-bold">
+                        Kelola User
+                    </h1>
+                    <p className="font-italic text-md">
+                        Kelola semua data user dengan mudah
                     </p>
                 </div>
             }
