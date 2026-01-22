@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Head, Link, router } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import {
     Table,
@@ -9,7 +9,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/Components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Card, CardContent, CardHeader } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { Badge } from "@/Components/ui/badge";
@@ -20,13 +20,30 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/Components/ui/select";
+import { PageProps } from "@/types";
+import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
+import { CheckCircle2Icon } from "lucide-react";
 
-export default function Index({ users }: any) {
+interface User {
+    id_user: number;
+    nama_user: string;
+    email: string;
+    password: string;
+    role: string;
+}
+
+type UsersPageProps = PageProps<{
+    users: User[];
+}>;
+
+export default function Index() {
+    const { users, flash } = usePage<UsersPageProps>().props;
+    const { delete: destroy, processing } = useForm({});
     const [search, setSearch] = useState("");
     const [role, setRole] = useState("all");
 
     const filteredUsers = useMemo(() => {
-        return users.filter((user: any) => {
+        return users.filter((user: User) => {
             const matchSearch =
                 user.nama_user.toLowerCase().includes(search.toLowerCase()) ||
                 user.email.toLowerCase().includes(search.toLowerCase());
@@ -37,9 +54,13 @@ export default function Index({ users }: any) {
         });
     }, [users, search, role]);
 
-    const handleDelete = (id: number) => {
-        if (confirm("Yakin ingin menghapus user ini?")) {
-            router.delete(`/admin/users/${id}`);
+    const handleDelete = (id_user: number, nama_user: string) => {
+        if (
+            confirm(
+                `Apakah yakin ingin menghapus data user = ${id_user} . ${nama_user}?`,
+            )
+        ) {
+            destroy(route("users.destroy", id_user));
         }
     };
 
@@ -59,6 +80,16 @@ export default function Index({ users }: any) {
             }
         >
             <Head title="Kelola User" />
+
+            {/* Flash Message */}
+            {flash?.message && (
+                <Alert className="space-x-2 rounded-xl">
+                    <CheckCircle2Icon />
+                    <AlertTitle>Success!</AlertTitle>
+                    <AlertDescription>{flash.message}</AlertDescription>
+                </Alert>
+            )}
+
             <Card className="shadow-sm">
                 <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4 border-b">
                     <Input
@@ -78,7 +109,7 @@ export default function Index({ users }: any) {
                                 <SelectItem value="user">User</SelectItem>
                             </SelectContent>
                         </Select>
-                        <Link href={route('users.create')}>
+                        <Link href={route("users.create")}>
                             <Button className="ms-auto w-fit rounded-xl shadow-none">
                                 Tambah
                             </Button>
@@ -112,7 +143,7 @@ export default function Index({ users }: any) {
                                 </TableRow>
                             ) : (
                                 filteredUsers.map((user: any) => (
-                                    <TableRow key={user.id}>
+                                    <TableRow key={user.id_user}>
                                         <TableCell>
                                             {user.id_user ?? user.id}
                                         </TableCell>
@@ -139,7 +170,10 @@ export default function Index({ users }: any) {
                                                 asChild
                                             >
                                                 <Link
-                                                    href={`/admin/users/${user.id}/edit`}
+                                                    href={route(
+                                                        "users.edit",
+                                                        user.id_user,
+                                                    )}
                                                 >
                                                     Edit
                                                 </Link>
@@ -147,8 +181,12 @@ export default function Index({ users }: any) {
                                             <Button
                                                 className="rounded- shadow-none rounded-xl"
                                                 variant="destructive"
+                                                disabled={processing}
                                                 onClick={() =>
-                                                    handleDelete(user.id)
+                                                    handleDelete(
+                                                        user.id_user,
+                                                        user.nama_user,
+                                                    )
                                                 }
                                             >
                                                 Hapus

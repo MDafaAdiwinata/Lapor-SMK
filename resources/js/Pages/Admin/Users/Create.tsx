@@ -23,7 +23,7 @@ export default function Create() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("products.store"));
+        post(route("users.store"));
     };
 
     return (
