@@ -12,74 +12,57 @@ import {
 import { Card, CardContent, CardHeader } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
-import { Badge } from "@/Components/ui/badge";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/Components/ui/select";
 import { PageProps } from "@/types";
 import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
 import { CheckCircle2Icon } from "lucide-react";
 
-interface User {
-    id_user: number;
-    nama_user: string;
-    email: string;
-    password: string;
-    role: string;
+interface Kategori {
+    id_kategori: number;
+    nama_kategori: string;
+    keterangan: string;
 }
 
-type UsersPageProps = PageProps<{
-    users: User[];
+type KategorisPageProps = PageProps<{
+    kategoris: Kategori[];
 }>;
 
 export default function Index() {
-    const { users, flash } = usePage<UsersPageProps>().props;
+    const { kategoris, flash } = usePage<KategorisPageProps>().props;
     const { delete: destroy, processing } = useForm({});
     const [search, setSearch] = useState("");
-    const [role, setRole] = useState("all");
 
-    const filteredUsers = useMemo(() => {
-        return users.filter((user: User) => {
-            const matchSearch =
-                user.nama_user.toLowerCase().includes(search.toLowerCase()) ||
-                user.email.toLowerCase().includes(search.toLowerCase());
-
-            const matchRole = role === "all" ? true : user.role === role;
-
-            return matchSearch && matchRole;
+    const filteredKategori = useMemo(() => {
+        return kategoris.filter((kategori: Kategori) => {
+            return kategori.nama_kategori
+                .toLowerCase()
+                .includes(search.toLowerCase());
         });
-    }, [users, search, role]);
+    }, [kategoris, search]);
 
-    const handleDelete = (id_user: number, nama_user: string) => {
+    const handleDelete = (id_kategori: number, nama_kategori: string) => {
         if (
-            confirm(
-                `Apakah yakin ingin menghapus data user = ${id_user} ${nama_user}?`,
-            )
+            confirm(`Apakah yakin ingin menghapus kategori "${nama_kategori}"?`)
         ) {
-            destroy(route("users.destroy", id_user));
+            destroy(route("kategoris.destroy", id_kategori));
         }
     };
 
     return (
         <AuthenticatedLayout
             role="admin"
-            breadcrumbs={[{ label: "Kelola User" }]}
+            breadcrumbs={[{ label: "Kelola Kategori Laporan" }]}
             header={
                 <div>
                     <h1 className="text-2xl md:-ms-0.5 font-bold">
-                        Kelola User
+                        Kelola Kategori Laporan
                     </h1>
                     <p className="font-italic text-md">
-                        Kelola semua data user dengan mudah
+                        Kelola semua data Kategori Laporan dengan mudah
                     </p>
                 </div>
             }
         >
-            <Head title="Kelola User" />
+            <Head title="Kelola Kategori Laporan" />
 
             {/* Flash Message */}
             {flash?.message && (
@@ -93,28 +76,16 @@ export default function Index() {
             <Card className="shadow-sm">
                 <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4 border-b">
                     <Input
-                        placeholder="Cari nama atau email..."
+                        placeholder="Cari nama kategori..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="w-full md:w-64 shadow-none focus:shadow-sm text-sm"
                     />
-                    <div className="flex flex-col md:flex-row gap-4 md:gap-2">
-                        <Select value={role} onValueChange={setRole}>
-                            <SelectTrigger className="w-full md:w-40 shadow-none">
-                                <SelectValue placeholder="Filter Role" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">Semua</SelectItem>
-                                <SelectItem value="admin">Admin</SelectItem>
-                                <SelectItem value="user">User</SelectItem>
-                            </SelectContent>
-                        </Select>
-                        <Link href={route("users.create")}>
-                            <Button className="float-right w-fit rounded-xl shadow-none">
-                                Tambah
-                            </Button>
-                        </Link>
-                    </div>
+                    <Link href={route("kategoris.create")}>
+                        <Button className="float-right w-fit rounded-xl shadow-none">
+                            Tambah
+                        </Button>
+                    </Link>
                 </CardHeader>
 
                 <CardContent>
@@ -122,9 +93,8 @@ export default function Index() {
                         <TableHeader>
                             <TableRow>
                                 <TableHead>No</TableHead>
-                                <TableHead>Nama</TableHead>
-                                <TableHead>Email</TableHead>
-                                <TableHead>Role</TableHead>
+                                <TableHead>Nama Kategori</TableHead>
+                                <TableHead>Keterangan</TableHead>
                                 <TableHead className="text-right">
                                     Aksi
                                 </TableHead>
@@ -132,47 +102,37 @@ export default function Index() {
                         </TableHeader>
 
                         <TableBody>
-                            {filteredUsers.length === 0 ? (
+                            {filteredKategori.length === 0 ? (
                                 <TableRow>
                                     <TableCell
-                                        colSpan={5}
-                                        className="text-center text-muted-foreground"
+                                        colSpan={4}
+                                        className="text-center text-muted-foreground pt-6"
                                     >
                                         Data tidak ditemukan
                                     </TableCell>
                                 </TableRow>
                             ) : (
-                                filteredUsers.map((user: any) => (
-                                    <TableRow key={user.id_user}>
+                                filteredKategori.map((kategori) => (
+                                    <TableRow key={kategori.id_kategori}>
                                         <TableCell>
-                                            {user.id_user ?? user.id}
+                                            {kategori.id_kategori}
                                         </TableCell>
                                         <TableCell className="font-medium">
-                                            {user.nama_user}
+                                            {kategori.nama_kategori}
                                         </TableCell>
-                                        <TableCell>{user.email}</TableCell>
                                         <TableCell>
-                                            <Badge
-                                                variant="outline"
-                                                className={
-                                                    user.role === "admin"
-                                                        ? "bg-blue-50 text-blue-700 border-blue-200"
-                                                        : "bg-gray-50 text-gray-700 border-gray-200"
-                                                }
-                                            >
-                                                {user.role}
-                                            </Badge>
+                                            {kategori.keterangan}
                                         </TableCell>
-                                        <TableCell className="text-right space-y-2 sm:space-x-2 md:space-x-2">
+                                        <TableCell className="text-right space-x-2">
                                             <Button
-                                                className="rounded-xl shadow-none"
                                                 variant="outline"
+                                                className="rounded-xl shadow-none"
                                                 asChild
                                             >
                                                 <Link
                                                     href={route(
-                                                        "users.edit",
-                                                        user.id_user,
+                                                        "kategoris.edit",
+                                                        kategori.id_kategori,
                                                     )}
                                                 >
                                                     Edit
@@ -184,8 +144,8 @@ export default function Index() {
                                                 disabled={processing}
                                                 onClick={() =>
                                                     handleDelete(
-                                                        user.id_user,
-                                                        user.nama_user,
+                                                        kategori.id_kategori,
+                                                        kategori.nama_kategori,
                                                     )
                                                 }
                                             >
