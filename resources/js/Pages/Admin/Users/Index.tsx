@@ -65,7 +65,7 @@ export default function Index({ users }: any) {
                         placeholder="Cari nama atau email..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full md:w-64 shadow-none focus:shadow-sm text-xs"
+                        className="w-full md:w-64 shadow-none focus:shadow-sm text-sm"
                     />
                     <div className="flex flex-col md:flex-row gap-4 md:gap-2">
                         <Select value={role} onValueChange={setRole}>
@@ -78,9 +78,11 @@ export default function Index({ users }: any) {
                                 <SelectItem value="user">User</SelectItem>
                             </SelectContent>
                         </Select>
-                        <Button className="ms-auto w-fit rounded-xl shadow-none">
-                            Tambah
-                        </Button>
+                        <Link href={route('users.create')}>
+                            <Button className="ms-auto w-fit rounded-xl shadow-none">
+                                Tambah
+                            </Button>
+                        </Link>
                     </div>
                 </CardHeader>
 
@@ -130,11 +132,10 @@ export default function Index({ users }: any) {
                                                 {user.role}
                                             </Badge>
                                         </TableCell>
-                                        <TableCell className="text-right space-y-2 md:space-x-2">
+                                        <TableCell className="text-right space-y-2 sm:space-x-2 md:space-x-2">
                                             <Button
-                                                className="rounded-lg shadow-none"
+                                                className="rounded-xl shadow-none"
                                                 variant="outline"
-                                                size="sm"
                                                 asChild
                                             >
                                                 <Link
@@ -144,9 +145,8 @@ export default function Index({ users }: any) {
                                                 </Link>
                                             </Button>
                                             <Button
-                                                className="rounded- shadow-none"
+                                                className="rounded- shadow-none rounded-xl"
                                                 variant="destructive"
-                                                size="sm"
                                                 onClick={() =>
                                                     handleDelete(user.id)
                                                 }

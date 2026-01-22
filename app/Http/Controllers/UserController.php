@@ -16,4 +16,8 @@ class UserController extends Controller
             'users' => $users,
         ]);
     }
+
+    public function create() {
+        return Inertia::render('Admin/Users/Create', []);
+    }
 }

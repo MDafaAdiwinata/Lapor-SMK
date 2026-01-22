@@ -33,8 +33,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'admin'])->name('admin.dashboard');
 
     // CRUD Users
-    // Route::resource('users', UserController::class);
-    Route::get('users', [UserController::class, 'index'])->name('admin.users.index');
+    Route::resource('users', UserController::class);
 });
 
 // role->user
