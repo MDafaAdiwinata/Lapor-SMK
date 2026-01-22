@@ -7,6 +7,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Models\Kategori;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
@@ -34,6 +35,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
 
     // CRUD Users
     Route::resource('users', UserController::class);
+    Route::resource('kategoris', KategoriController::class);
 });
 
 // role->user
