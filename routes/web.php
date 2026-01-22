@@ -4,6 +4,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 
@@ -31,8 +32,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'admin'])->name('admin.dashboard');
 
-    // CRUD Products
-    // Route::resource('products', ProductController::class);
+    // CRUD Users
+    // Route::resource('users', UserController::class);
+    Route::get('users', [UserController::class, 'index'])->name('admin.users.index');
 });
 
 // role->user
@@ -40,4 +42,4 @@ Route::middleware(['auth', 'verified'])->prefix('user')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'user'])->name('user.dashboard');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
