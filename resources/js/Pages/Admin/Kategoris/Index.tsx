@@ -82,7 +82,7 @@ export default function Index() {
                         className="w-full md:w-64 shadow-none focus:shadow-sm text-sm"
                     />
                     <Link href={route("kategoris.create")}>
-                        <Button className="ms-auto w-fit rounded-xl shadow-none">
+                        <Button className="float-right w-fit rounded-xl shadow-none">
                             Tambah
                         </Button>
                     </Link>

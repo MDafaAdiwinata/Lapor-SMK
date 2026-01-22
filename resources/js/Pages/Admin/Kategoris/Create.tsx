@@ -12,41 +12,43 @@ import {
 import InputLabel from "@/Components/InputLabel";
 import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
 import { CircleAlert } from "lucide-react";
+import { Textarea } from "@/Components/ui/textarea";
 
 export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
-        nama_user: "",
-        email: "",
-        password: "",
-        role: "",
+        nama_kategori: "",
+        keterangan: "",
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("users.store"));
+        post(route("kategoris.store"));
     };
 
     return (
         <AuthenticatedLayout
             role="admin"
             breadcrumbs={[
-                { label: "Kelola User", href: "/admin/users" },
-                { label: "Tambah User" },
+                { label: "Kelola Kategori Laporan", href: "/admin/kategoris" },
+                { label: "Tambah Kategori Laporan" },
             ]}
             header={
                 <div>
                     <h1 className="text-2xl font-bold">Tambah User</h1>
                     <p className="text-md">
-                        Tambahkan user baru ke dalam sistem
+                        Tambahkan Kategori Laporan baru ke dalam sistem
                     </p>
                 </div>
             }
         >
-            <Head title="Tambah User" />
+            <Head title="Tambah Kategori Laporan" />
 
             {/* kalo ada eror, tampilkan alert */}
             {Object.keys(errors).length > 0 && (
-                <Alert variant="destructive" className="mb-2 space-x-2 max-w-xl rounded-xl">
+                <Alert
+                    variant="destructive"
+                    className="mb-2 space-x-2 max-w-xl rounded-xl"
+                >
                     <CircleAlert />
                     <AlertTitle>Warning!</AlertTitle>
                     <AlertDescription>
@@ -60,72 +62,39 @@ export default function Create() {
             )}
             <form
                 onSubmit={handleSubmit}
-                className="max-w-xl flex flex-col gap-4"
+                className="max-w-xl flex flex-col gap-4 md:gap-6"
             >
                 {/* Nama */}
-                <div className="space-y-1">
-                    <InputLabel htmlFor="nama_user" value="Nama User">
-                        Nama User
+                <div className="flex flex-col gap-1.5">
+                    <InputLabel htmlFor="nama_kategori" value="Nama Kategori">
+                        Nama Kategori
                     </InputLabel>
                     <Input
-                        value={data.nama_user}
-                        onChange={(e) => setData("nama_user", e.target.value)}
-                        placeholder="Masukkan nama user"
-                    />
-                </div>
-
-                {/* Email */}
-                <div className="space-y-1">
-                    <InputLabel htmlFor="email" value="email">
-                        Email
-                    </InputLabel>
-                    <Input
-                        type="email"
-                        value={data.email}
-                        onChange={(e) => setData("email", e.target.value)}
-                        placeholder="user@email.com"
-                    />
-                </div>
-
-                {/* Password */}
-                <div className="space-y-1">
-                    <InputLabel htmlFor="password" value="password">
-                        Password
-                    </InputLabel>
-                    <Input
-                        type="password"
-                        value={data.password}
-                        onChange={(e) => setData("password", e.target.value)}
-                        placeholder="••••••••"
-                    />
-                </div>
-
-                {/* Role */}
-                <div className="space-y-1">
-                    <InputLabel htmlFor="role">Role</InputLabel>
-                    <Select
-                        value={data.role}
-                        onValueChange={(value) =>
-                            setData({ ...data, role: value })
+                        value={data.nama_kategori}
+                        onChange={(e) =>
+                            setData("nama_kategori", e.target.value)
                         }
-                    >
-                        <SelectTrigger className="shadow-none">
-                            <SelectValue placeholder="Pilih role" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="admin">Admin</SelectItem>
-                            <SelectItem value="user">User</SelectItem>
-                        </SelectContent>
-                    </Select>
+                        placeholder="Masukkan nama kategori laporan"
+                    />
+                </div>
+
+                {/* Keterangan */}
+                <div className="mb-4 flex flex-col gap-1.5">
+                    <InputLabel htmlFor="keterangan">
+                        Keterangan Kategori Laporan
+                    </InputLabel>
+                    <Textarea
+                        className="rounded-xl"
+                        value={data.keterangan}
+                        placeholder="input keterangan Product"
+                        onChange={(e) => setData("keterangan", e.target.value)}
+                    ></Textarea>
                 </div>
 
                 {/* Actions */}
                 <div className="flex justify-end gap-2 pt-4">
                     <Button variant="outline" asChild>
-                        <Link
-                            href="/admin/users"
-                            className="rounded-xl"
-                        >
+                        <Link href="/admin/kategoris" className="rounded-xl">
                             Batal
                         </Link>
                     </Button>

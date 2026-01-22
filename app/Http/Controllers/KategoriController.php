@@ -15,4 +15,9 @@ class KategoriController extends Controller
             'kategoris' => $kategoris,
         ]);
     }
+
+    public function create()
+    {
+        return Inertia::render('Admin/Kategoris/Create', []);
+    }
 }

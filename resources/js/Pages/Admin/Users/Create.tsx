@@ -46,7 +46,10 @@ export default function Create() {
 
             {/* kalo ada eror, tampilkan alert */}
             {Object.keys(errors).length > 0 && (
-                <Alert variant="destructive" className="mb-2 space-x-2 max-w-xl rounded-xl">
+                <Alert
+                    variant="destructive"
+                    className="mb-2 space-x-2 max-w-xl rounded-xl"
+                >
                     <CircleAlert />
                     <AlertTitle>Warning!</AlertTitle>
                     <AlertDescription>
@@ -122,10 +125,7 @@ export default function Create() {
                 {/* Actions */}
                 <div className="flex justify-end gap-2 pt-4">
                     <Button variant="outline" asChild>
-                        <Link
-                            href="/admin/users"
-                            className="rounded-xl"
-                        >
+                        <Link href="/admin/users" className="rounded-xl">
                             Batal
                         </Link>
                     </Button>

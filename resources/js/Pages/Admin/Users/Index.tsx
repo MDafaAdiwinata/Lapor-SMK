@@ -110,7 +110,7 @@ export default function Index() {
                             </SelectContent>
                         </Select>
                         <Link href={route("users.create")}>
-                            <Button className="ms-auto w-fit rounded-xl shadow-none">
+                            <Button className="float-right w-fit rounded-xl shadow-none">
                                 Tambah
                             </Button>
                         </Link>
