@@ -2,13 +2,6 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/Components/ui/select";
 import InputLabel from "@/Components/InputLabel";
 import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
 import { CircleAlert } from "lucide-react";
@@ -34,7 +27,7 @@ export default function Create() {
             ]}
             header={
                 <div>
-                    <h1 className="text-2xl font-bold">Tambah User</h1>
+                    <h1 className="text-2xl font-bold">Tambah Kategori</h1>
                     <p className="text-md">
                         Tambahkan Kategori Laporan baru ke dalam sistem
                     </p>

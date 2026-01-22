@@ -130,10 +130,7 @@ export default function Index() {
                                                 asChild
                                             >
                                                 <Link
-                                                    href={route(
-                                                        "kategori.edit",
-                                                        kategori.id_kategori,
-                                                    )}
+                                                    href=""
                                                 >
                                                     Edit
                                                 </Link>
