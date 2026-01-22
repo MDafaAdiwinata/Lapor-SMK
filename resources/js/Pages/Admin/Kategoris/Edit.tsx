@@ -13,63 +13,66 @@ import InputLabel from "@/Components/InputLabel";
 import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
 import { CircleAlert } from "lucide-react";
 import { useEffect } from "react";
+import { Textarea } from "@/Components/ui/textarea";
 
-interface User {
-    id_user: number;
-    nama_user: string;
-    email: string;
-    role: string;
+interface Kategori {
+    id_kategori: number;
+    nama_kategori: string;
+    keterangan: string;
 }
 
 interface Props {
-    user: User;
+    kategori: Kategori;
 }
 
-export default function Edit({ user }: Props) {
+export default function Edit({ kategori }: Props) {
     const { data, setData, post, processing, errors } = useForm({
-        nama_user: user.nama_user ?? "",
-        email: user.email ?? "",
-        password: "",
-        role: user.role ?? "",
+        nama_kategori: kategori.nama_kategori ?? "",
+        keterangan: kategori.keterangan ?? "",
         _method: "PUT",
     });
 
     useEffect(() => {
-        if (user) {
+        if (kategori) {
             setData({
-                nama_user: user.nama_user ?? "",
-                email: user.email ?? "",
-                password: "",
-                role: user.role ?? "",
+                nama_kategori: kategori.nama_kategori ?? "",
+                keterangan: kategori.keterangan ?? "",
                 _method: "PUT",
             });
         }
-    }, [user]);
+    }, [kategori]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("users.update", user.id_user));
+        post(route("kategoris.update", kategori.id_kategori));
     };
 
     return (
         <AuthenticatedLayout
             role="admin"
             breadcrumbs={[
-                { label: "Kelola User", href: "/admin/users" },
-                { label: "Edit User" },
+                { label: "Kelola Kategori Laporan", href: "/admin/kategoris" },
+                { label: "Edit Kategori Laporan" },
             ]}
             header={
                 <div>
-                    <h1 className="text-2xl font-bold">Edit User</h1>
-                    <p className="text-md">Ubah data user ke dalam sistem</p>
+                    <h1 className="text-2xl font-bold">
+                        Edit Kategori Laporan
+                    </h1>
+                    <p className="text-md">
+                        Ubah data Kategori Laporan ke dalam sistem
+                    </p>
                 </div>
             }
         >
-            <Head title="Edit User" />
+            <Head title="Edit Kategori Laporan" />
 
             {/* kalo ada eror, tampilkan alert */}
             {Object.keys(errors).length > 0 && (
-                <Alert variant="destructive" className="mb-2 max-w-xl rounded-xl space-x-2">
+                <Alert
+                    variant="destructive"
+                    className="mb-2 max-w-xl rounded-xl space-x-2"
+                >
                     <CircleAlert />
                     <AlertTitle>Warning</AlertTitle>
                     <AlertDescription>
@@ -87,63 +90,38 @@ export default function Edit({ user }: Props) {
             >
                 {/* Nama */}
                 <div className="space-y-1">
-                    <InputLabel htmlFor="nama_user" value="Nama User">
-                        Nama User
-                    </InputLabel>
-                    <Input
-                        value={data.nama_user}
-                        onChange={(e) => setData("nama_user", e.target.value)}
-                        placeholder="Masukkan nama user"
-                    />
-                </div>
-
-                {/* Email */}
-                <div className="space-y-1">
-                    <InputLabel htmlFor="email" value="email">
-                        Email
-                    </InputLabel>
-                    <Input
-                        type="email"
-                        value={data.email}
-                        onChange={(e) => setData("email", e.target.value)}
-                        placeholder="user@email.com"
-                    />
-                </div>
-
-                {/* Password */}
-                <div className="space-y-1">
-                    <InputLabel htmlFor="password" value="password">
-                        Password
-                    </InputLabel>
-                    <Input
-                        type="password"
-                        value={data.password}
-                        onChange={(e) => setData("password", e.target.value)}
-                        placeholder="••••••••"
-                    />
-                </div>
-
-                {/* Role */}
-                <div className="space-y-1">
-                    <InputLabel htmlFor="role">Role</InputLabel>
-                    <Select
-                        value={data.role}
-                        onValueChange={(value) => setData("role", value)}
+                    <InputLabel
+                        htmlFor="nama_kategori"
+                        value="Nama Kategori Laporan"
                     >
-                        <SelectTrigger className="shadow-none">
-                            <SelectValue placeholder="Pilih role" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="admin">Admin</SelectItem>
-                            <SelectItem value="user">User</SelectItem>
-                        </SelectContent>
-                    </Select>
+                        Nama Kategori Laporan
+                    </InputLabel>
+                    <Input
+                        value={data.nama_kategori}
+                        onChange={(e) =>
+                            setData("nama_kategori", e.target.value)
+                        }
+                        placeholder="Masukkan nama kategori laporan"
+                    />
+                </div>
+
+                {/* Keterangan */}
+                <div className="mb-4 flex flex-col gap-1.5">
+                    <InputLabel htmlFor="keterangan">
+                        Keterangan Kategori Laporan
+                    </InputLabel>
+                    <Textarea
+                        className="rounded-xl"
+                        value={data.keterangan}
+                        placeholder="input keterangan Product"
+                        onChange={(e) => setData("keterangan", e.target.value)}
+                    ></Textarea>
                 </div>
 
                 {/* Actions */}
                 <div className="flex justify-end gap-2 pt-4">
                     <Button variant="outline" asChild>
-                        <Link href="/admin/users" className="rounded-xl">
+                        <Link href="/admin/kategoris" className="rounded-xl">
                             Batal
                         </Link>
                     </Button>
