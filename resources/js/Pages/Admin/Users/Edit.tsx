@@ -12,18 +12,43 @@ import {
 import InputLabel from "@/Components/InputLabel";
 import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
 import { CircleAlert } from "lucide-react";
+import { useEffect } from "react";
 
-export default function Create() {
+interface User {
+    id_user: number;
+    nama_user: string;
+    email: string;
+    role: string;
+}
+
+interface Props {
+    user: User;
+}
+
+export default function Edit({ user }: Props) {
     const { data, setData, post, processing, errors } = useForm({
-        nama_user: "",
-        email: "",
+        nama_user: user.nama_user ?? "",
+        email: user.email ?? "",
         password: "",
-        role: "",
+        role: user.role ?? "",
+        _method: "PUT",
     });
+
+    useEffect(() => {
+        if (user) {
+            setData({
+                nama_user: user.nama_user ?? "",
+                email: user.email ?? "",
+                password: "",
+                role: user.role ?? "",
+                _method: "PUT",
+            });
+        }
+    }, [user]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("users.store"));
+        post(route("users.update", user.id_user));
     };
 
     return (
@@ -31,24 +56,22 @@ export default function Create() {
             role="admin"
             breadcrumbs={[
                 { label: "Kelola User", href: "/admin/users" },
-                { label: "Tambah User" },
+                { label: "Edit User" },
             ]}
             header={
                 <div>
-                    <h1 className="text-2xl font-bold">Tambah User</h1>
-                    <p className="text-md">
-                        Tambahkan user baru ke dalam sistem
-                    </p>
+                    <h1 className="text-2xl font-bold">Edit User</h1>
+                    <p className="text-md">Ubah data user ke dalam sistem</p>
                 </div>
             }
         >
-            <Head title="Tambah User" />
+            <Head title="Edit User" />
 
             {/* kalo ada eror, tampilkan alert */}
             {Object.keys(errors).length > 0 && (
-                <Alert variant="destructive" className="mb-2 space-x-2 max-w-xl rounded-xl">
+                <Alert variant="destructive" className="mb-2 max-w-xl rounded-xl space-x-2">
                     <CircleAlert />
-                    <AlertTitle>Warning!</AlertTitle>
+                    <AlertTitle>Warning</AlertTitle>
                     <AlertDescription>
                         <ul>
                             {Object.entries(errors).map(([key, message]) => (
@@ -105,9 +128,7 @@ export default function Create() {
                     <InputLabel htmlFor="role">Role</InputLabel>
                     <Select
                         value={data.role}
-                        onValueChange={(value) =>
-                            setData({ ...data, role: value })
-                        }
+                        onValueChange={(value) => setData("role", value)}
                     >
                         <SelectTrigger className="shadow-none">
                             <SelectValue placeholder="Pilih role" />
@@ -122,10 +143,7 @@ export default function Create() {
                 {/* Actions */}
                 <div className="flex justify-end gap-2 pt-4">
                     <Button variant="outline" asChild>
-                        <Link
-                            href="/admin/users"
-                            className="rounded-xl"
-                        >
+                        <Link href="/admin/users" className="rounded-xl">
                             Batal
                         </Link>
                     </Button>

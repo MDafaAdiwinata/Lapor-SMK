@@ -57,7 +57,7 @@ export default function Index() {
     const handleDelete = (id_user: number, nama_user: string) => {
         if (
             confirm(
-                `Apakah yakin ingin menghapus data user = ${id_user} . ${nama_user}?`,
+                `Apakah yakin ingin menghapus data user = ${id_user} ${nama_user}?`,
             )
         ) {
             destroy(route("users.destroy", id_user));
