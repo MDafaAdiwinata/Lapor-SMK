@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('isi_laporan');
             $table->date('tgl_laporan');
             $table->string('image')->nullable();
+            $table->enum('status', ['pending', 'proses', 'selesai'])->default('pending');
             $table->foreignId('id_user')->constrained('users', 'id_user')->onDelete('cascade');
             $table->foreignId('id_kategori')->constrained('kategori', 'id_kategori')->onDelete('cascade');
             $table->timestamps();

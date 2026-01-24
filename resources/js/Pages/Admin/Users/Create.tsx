@@ -23,7 +23,7 @@ export default function Create() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("users.store"));
+        post(route("admin.users.store"));
     };
 
     return (

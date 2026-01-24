@@ -15,7 +15,7 @@ export default function Create() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("kategoris.store"));
+        post(route("admin.kategoris.store"));
     };
 
     return (

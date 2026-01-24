@@ -35,6 +35,7 @@ class LaporanController extends Controller
             'judul_laporan' => 'required|string',
             'isi_laporan' => 'required|string',
             'tgl_laporan' => 'required|date',
+            'status' => 'required|in:pending,proses,selesai',
             'id_user' => 'required|exists:users,id_user',
             'id_kategori' => 'required|exists:kategori,id_kategori',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
@@ -50,13 +51,14 @@ class LaporanController extends Controller
             'judul_laporan' => $request->judul_laporan,
             'isi_laporan' => $request->isi_laporan,
             'tgl_laporan' => $request->tgl_laporan,
+            'status' => $request->status ?? 'pending',
             'id_user' => $request->id_user,
             'id_kategori' => $request->id_kategori,
             'image' => $imagePath,
         ]);
 
         return redirect()
-            ->route('laporans.index')
+            ->route('admin.laporans.index')
             ->with('message', 'Laporan Berhasil ditambahkan! 🥳');
     }
 
@@ -76,6 +78,7 @@ class LaporanController extends Controller
             'judul_laporan' => 'required|string|max:255',
             'isi_laporan' => 'required|string',
             'tgl_laporan' => 'required|date',
+            'status' => 'required|in:pending,proses,selesai',
             'id_user' => 'required|exists:users,id_user',
             'id_kategori' => 'required|exists:kategori,id_kategori',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
@@ -85,6 +88,7 @@ class LaporanController extends Controller
             'judul_laporan' => $request->judul_laporan,
             'isi_laporan' => $request->isi_laporan,
             'tgl_laporan' => $request->tgl_laporan,
+            'status' => $request->status,
             'id_user' => $request->id_user,
             'id_kategori' => $request->id_kategori,
         ];
@@ -105,7 +109,7 @@ class LaporanController extends Controller
         $laporan->update($updateData);
 
         return redirect()
-            ->route('laporans.index')
+            ->route('admin.laporans.index')
             ->with('message', 'Laporan berhasil diperbarui ✨');
     }
 
@@ -120,6 +124,6 @@ class LaporanController extends Controller
         }
 
         $laporan->delete();
-        return redirect()->route('laporans.index')->with('message', 'Laporan berhasil dihapus! 🥳.');
+        return redirect()->route('admin.laporans.index')->with('message', 'Laporan berhasil dihapus! 🥳.');
     }
 }

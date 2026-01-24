@@ -33,14 +33,19 @@ Route::middleware('auth')->group(function () {
 
 
 // role->admin
-Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'admin'])->name('admin.dashboard');
+Route::middleware(['auth', 'verified'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
-    // CRUD Users
-    Route::resource('users', UserController::class);
-    Route::resource('kategoris', KategoriController::class);
-    Route::resource('laporans', LaporanController::class);
-});
+        Route::get('/dashboard', [DashboardController::class, 'admin'])
+            ->name('dashboard');
+
+        Route::resource('users', UserController::class);
+        Route::resource('kategoris', KategoriController::class);
+        Route::resource('laporans', LaporanController::class);
+    });
+
 
 // role->user
 Route::middleware(['auth', 'verified'])->prefix('user')->group(function () {

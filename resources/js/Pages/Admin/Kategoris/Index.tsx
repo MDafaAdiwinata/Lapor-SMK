@@ -43,7 +43,7 @@ export default function Index() {
         if (
             confirm(`Apakah yakin ingin menghapus kategori "${nama_kategori}"?`)
         ) {
-            destroy(route("kategoris.destroy", id_kategori));
+            destroy(route("admin.kategoris.destroy", id_kategori));
         }
     };
 
@@ -81,7 +81,7 @@ export default function Index() {
                         onChange={(e) => setSearch(e.target.value)}
                         className="w-full md:w-64 shadow-none focus:shadow-sm text-sm"
                     />
-                    <Link href={route("kategoris.create")}>
+                    <Link href={route("admin.kategoris.create")}>
                         <Button className="float-right w-fit rounded-xl shadow-none">
                             Tambah
                         </Button>
@@ -131,7 +131,7 @@ export default function Index() {
                                             >
                                                 <Link
                                                     href={route(
-                                                        "kategoris.edit",
+                                                        "admin.kategoris.edit",
                                                         kategori.id_kategori,
                                                     )}
                                                 >
