@@ -1,4 +1,3 @@
-// resources/js/Pages/User/Dashboard.tsx
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import {
@@ -10,6 +9,14 @@ import {
 } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/Components/ui/table";
+import {
     FileText,
     History,
     CheckCircle,
@@ -18,7 +25,21 @@ import {
 } from "lucide-react";
 import { Link } from "@inertiajs/react";
 
-export default function Dashboard() {
+interface Laporan {
+    id_laporan: number;
+    judul_laporan: string;
+    tgl_laporan: string;
+    image?: string | null;
+    kategori: {
+        nama_kategori: string;
+    };
+}
+
+export default function Dashboard({
+    laporanTerbaru = [],
+}: {
+    laporanTerbaru: Laporan[];
+}) {
     return (
         <AuthenticatedLayout
             role="user"
@@ -38,7 +59,7 @@ export default function Dashboard() {
 
             {/* STATS CARDS */}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                <Card>
+                <Card className="shadow-none px-1.5 hover:shadow-md transition duration-300">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
                             Total Laporan
@@ -53,7 +74,7 @@ export default function Dashboard() {
                     </CardContent>
                 </Card>
 
-                <Card>
+                <Card className="shadow-none px-1.5 hover:shadow-md transition duration-300">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
                             Sedang Diproses
@@ -68,7 +89,7 @@ export default function Dashboard() {
                     </CardContent>
                 </Card>
 
-                <Card>
+                <Card className="shadow-none px-1.5 hover:shadow-md transition duration-300">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
                             Selesai
@@ -86,7 +107,7 @@ export default function Dashboard() {
 
             {/* QUICK ACTIONS */}
             <div className="grid gap-4 md:grid-cols-2">
-                <Card>
+                <Card className="shadow-none p-1.5 hover:shadow-md transition duration-300">
                     <CardHeader>
                         <CardTitle>Buat Laporan Baru</CardTitle>
                         <CardDescription>
@@ -95,7 +116,7 @@ export default function Dashboard() {
                     </CardHeader>
                     <CardContent>
                         <Button asChild className="w-full">
-                            <Link href="/laporan/create">
+                            <Link href={route("laporans.create")}>
                                 <FileText className="mr-2 h-4 w-4" />
                                 Buat Laporan
                             </Link>
@@ -103,7 +124,7 @@ export default function Dashboard() {
                     </CardContent>
                 </Card>
 
-                <Card>
+                <Card className="shadow-none p-1.5 hover:shadow-md transition duration-300">
                     <CardHeader>
                         <CardTitle>Riwayat Laporan</CardTitle>
                         <CardDescription>
@@ -112,7 +133,7 @@ export default function Dashboard() {
                     </CardHeader>
                     <CardContent>
                         <Button asChild variant="outline" className="w-full">
-                            <Link href="/laporan/history">
+                            <Link href={route("laporans.histori")}>
                                 <History className="mr-2 h-4 w-4" />
                                 Lihat Riwayat
                             </Link>
@@ -122,21 +143,72 @@ export default function Dashboard() {
             </div>
 
             {/* RECENT REPORTS */}
-            <Card>
+            <Card className="shadow-none px-1.5">
                 <CardHeader>
                     <CardTitle>Laporan Terbaru</CardTitle>
                     <CardDescription>
-                        Laporan yang baru saja Anda buat
+                        laporan terakhir yang Anda buat
                     </CardDescription>
                 </CardHeader>
+
                 <CardContent>
-                    <div className="text-center py-8 text-muted-foreground">
-                        <FileText className="mx-auto h-12 w-12 mb-4 opacity-50" />
-                        <p>Belum ada laporan.</p>
-                        <p className="text-sm">
-                            Klik "Buat Laporan" untuk membuat laporan baru.
-                        </p>
-                    </div>
+                    {laporanTerbaru.length === 0 ? (
+                        <div className="text-center py-10 text-muted-foreground">
+                            <FileText className="mx-auto h-10 w-10 mb-3 opacity-50" />
+                            <p>Belum ada laporan.</p>
+                        </div>
+                    ) : (
+                        <div className="overflow-x-auto">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Judul</TableHead>
+                                        <TableHead>Kategori</TableHead>
+                                        <TableHead>Tanggal</TableHead>
+                                        <TableHead className="text-center">
+                                            Gambar
+                                        </TableHead>
+                                    </TableRow>
+                                </TableHeader>
+
+                                <TableBody>
+                                    {laporanTerbaru.map((laporan) => (
+                                        <TableRow
+                                            key={laporan.id_laporan}
+                                            className="hover:bg-muted/50 transition"
+                                        >
+                                            <TableCell className="font-medium">
+                                                {laporan.judul_laporan}
+                                            </TableCell>
+
+                                            <TableCell>
+                                                {
+                                                    laporan.kategori
+                                                        ?.nama_kategori
+                                                }
+                                            </TableCell>
+
+                                            <TableCell>
+                                                {laporan.tgl_laporan}
+                                            </TableCell>
+
+                                            <TableCell className="text-center">
+                                                <img
+                                                    src={
+                                                        laporan.image
+                                                            ? `/storage/${laporan.image}`
+                                                            : "/storage/noimage.png"
+                                                    }
+                                                    alt={laporan.judul_laporan}
+                                                    className="h-20 w-20 rounded-lg object-cover mx-auto border"
+                                                />
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </div>
+                    )}
                 </CardContent>
             </Card>
         </AuthenticatedLayout>
