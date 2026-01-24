@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Models\Laporan;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class LaporanController extends Controller
 {
@@ -67,5 +68,44 @@ class LaporanController extends Controller
             'users' => User::all(),
             'kategoris' => Kategori::all(),
         ]);
+    }
+
+    public function update(Request $request, Laporan $laporan)
+    {
+        $request->validate([
+            'judul_laporan' => 'required|string|max:255',
+            'isi_laporan' => 'required|string',
+            'tgl_laporan' => 'required|date',
+            'id_user' => 'required|exists:users,id_user',
+            'id_kategori' => 'required|exists:kategori,id_kategori',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $updateData = [
+            'judul_laporan' => $request->judul_laporan,
+            'isi_laporan' => $request->isi_laporan,
+            'tgl_laporan' => $request->tgl_laporan,
+            'id_user' => $request->id_user,
+            'id_kategori' => $request->id_kategori,
+        ];
+        
+        if ($request->hasFile('image')) {
+
+            // hapus gambar lama
+            if ($laporan->image) {
+                Storage::disk('public')->delete($laporan->image);
+            }
+
+            // simpan gambar baru
+            $imagePath = $request->file('image')->store('laporans', 'public');
+            $updateData['image'] = $imagePath;
+        }
+
+        // update ke database
+        $laporan->update($updateData);
+
+        return redirect()
+            ->route('laporans.index')
+            ->with('message', 'Laporan berhasil diperbarui ✨');
     }
 }
