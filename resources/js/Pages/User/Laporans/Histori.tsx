@@ -20,7 +20,7 @@ import {
     PopoverTrigger,
 } from "@/Components/ui/popover";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
     Select,
@@ -134,20 +134,20 @@ export default function Index() {
 
     return (
         <AuthenticatedLayout
-            role="admin"
-            breadcrumbs={[{ label: "Kelola Laporan" }]}
+            role="user"
+            breadcrumbs={[{ label: "Riwayat Laporan" }]}
             header={
                 <div>
                     <h1 className="text-2xl md:-ms-0.5 font-bold">
-                        Kelola Laporan
+                        Riwayat Laporan
                     </h1>
                     <p className="font-italic text-md">
-                        Kelola semua data Laporan dengan mudah
+                        Lihat semua data Laporan yang telah dibuat
                     </p>
                 </div>
             }
         >
-            <Head title="Kelola Laporan" />
+            <Head title="Riwayat laporan" />
 
             {/* Flash Message */}
             {flash?.message && (
@@ -161,7 +161,7 @@ export default function Index() {
             <Card className="shadow-sm">
                 <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4 border-b">
                     <Input
-                        placeholder="Cari laporan atau nama user..."
+                        placeholder="Cari laporan..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="w-full md:w-64 shadow-none focus:shadow-sm text-sm"
@@ -240,10 +240,13 @@ export default function Index() {
 
                         <Button
                             asChild
-                            className="rounded-xl shadow-none w-fit"
+                            className="rounded-xl shadow-none"
                             disabled={processing}
                         >
-                            <Link href={route("laporans.create")}>Tambah</Link>
+                            <Link href={route("laporans.create")}>
+                                <Plus />
+                                Buat Laporan
+                            </Link>
                         </Button>
                     </div>
                 </CardHeader>
@@ -263,9 +266,6 @@ export default function Index() {
                                 <TableHead>Kategori</TableHead>
                                 <TableHead>Tanggal</TableHead>
                                 <TableHead>Isi</TableHead>
-                                <TableHead className="text-right">
-                                    Aksi
-                                </TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -321,38 +321,6 @@ export default function Index() {
 
                                         <TableCell className="max-w-xs text-sm text-muted-foreground">
                                             {truncate(laporan.isi_laporan)}
-                                        </TableCell>
-
-                                        <TableCell className="text-right space-x-2">
-                                            <Button
-                                                variant="outline"
-                                                size="md"
-                                                className="rounded-xl"
-                                                asChild
-                                            >
-                                                <Link
-                                                    href={route(
-                                                        "laporans.edit",
-                                                        laporan.id_laporan,
-                                                    )}
-                                                >
-                                                    Edit
-                                                </Link>
-                                            </Button>
-
-                                            <Button
-                                                variant="destructive"
-                                                size="md"
-                                                className="rounded-xl"
-                                                onClick={() =>
-                                                    handleDelete(
-                                                        laporan.id_laporan,
-                                                        laporan.judul_laporan,
-                                                    )
-                                                }
-                                            >
-                                                Hapus
-                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))

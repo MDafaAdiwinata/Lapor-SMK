@@ -40,8 +40,8 @@ const userNavData = {
             isActive: true,
         },
         {
-            title: "Histori Laporan",
-            url: "/users/history",
+            title: "Riwayat Laporan",
+            url: route('laporans.histori'),
             icon: History,
             isActive: true,
         },

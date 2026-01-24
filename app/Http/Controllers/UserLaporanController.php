@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\Auth;
 
 class UserLaporanController extends Controller
 {
+    public function index()
+    {
+        $laporans = Laporan::with(['user:id_user,nama_user', 'kategori:id_kategori,nama_kategori'])->where('id_user', Auth::id())->get();
+        $kategoris = Kategori::orderBy('nama_kategori', 'asc')->get();
+        return Inertia::render('User/Laporans/Histori', [
+            'laporans' => $laporans,
+            'kategoris' => $kategoris,
+        ]);
+    }
+
     public function create()
     {
         return Inertia::render('User/Laporans/Create', [
@@ -45,7 +55,7 @@ class UserLaporanController extends Controller
         Laporan::create($data);
 
         return redirect()
-            ->route('laporans.create')
+            ->route('laporans.histori')
             ->with('message', 'Laporan berhasil dikirim! 🥳');
     }
 }

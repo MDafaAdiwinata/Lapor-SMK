@@ -47,7 +47,7 @@ Route::middleware(['auth', 'verified'])->prefix('user')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'user'])->name('user.dashboard');
     Route::get('/laporans/create', [UserLaporanController::class, 'create'])->name('laporans.create');
     Route::post('/laporans', [UserLaporanController::class, 'store'])->name('user.laporans.store');
-    Route::post('/laporans/histori', [UserLaporanController::class, 'index'])->name('user.histori');
+    Route::get('/laporans/histori', [UserLaporanController::class, 'index'])->name('laporans.histori');
 });
 
 require __DIR__ . '/auth.php';
