@@ -35,7 +35,7 @@ const userNavData = {
         },
         {
             title: "Buat Laporan",
-            url: "/users/laporans",
+            url: route('laporans.create'),
             icon: FileText,
             isActive: true,
         },
