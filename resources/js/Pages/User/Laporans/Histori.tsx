@@ -1,0 +1,334 @@
+import { useState, useMemo } from "react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/Components/ui/table";
+import { Card, CardContent, CardHeader } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
+import { Badge } from "@/Components/ui/badge";
+import { Calendar } from "@/Components/ui/calendar";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/Components/ui/popover";
+import { format } from "date-fns";
+import { CalendarIcon, Plus } from "lucide-react";
+import { cn } from "@/lib/utils";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/Components/ui/select";
+import { PageProps } from "@/types";
+import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
+import { CheckCircle2Icon } from "lucide-react";
+
+interface Laporan {
+    id_laporan: number;
+    judul_laporan: string;
+    isi_laporan: string;
+    tgl_laporan: string;
+    image?: string | null;
+    id_user: number;
+    id_kategori: number;
+
+    user?: {
+        id_user: number;
+        nama_user: string;
+    };
+
+    kategori?: {
+        id_kategori: number;
+        nama_kategori: string;
+    };
+}
+
+interface Kategori {
+    id_kategori: number;
+    nama_kategori: string;
+}
+
+type LaporansPageProps = PageProps<{
+    laporans: Laporan[];
+    kategoris: Kategori[];
+}>;
+
+export default function Index() {
+    const { laporans, kategoris, flash } = usePage<LaporansPageProps>().props;
+    const { delete: destroy, processing } = useForm({});
+    const [search, setSearch] = useState("");
+    const [kategori, setKategori] = useState<string>("all");
+    const [tanggal, setTanggal] = useState<Date | undefined>();
+    const [pelapor, setPelapor] = useState<string>("all");
+
+    const pelaporList = useMemo(() => {
+        const map = new Map<number, string>();
+
+        laporans.forEach((laporan) => {
+            if (laporan.user) {
+                map.set(laporan.user.id_user, laporan.user.nama_user);
+            }
+        });
+
+        return Array.from(map.entries()).map(([id, nama]) => ({
+            id,
+            nama,
+        }));
+    }, [laporans]);
+
+    const filteredLaporans = useMemo(() => {
+        return laporans.filter((laporan) => {
+            const keyword = search.toLowerCase();
+
+            const matchSearch =
+                laporan.judul_laporan.toLowerCase().includes(keyword) ||
+                laporan.isi_laporan.toLowerCase().includes(keyword) ||
+                laporan.user?.nama_user?.toLowerCase().includes(keyword) ||
+                laporan.kategori?.nama_kategori
+                    ?.toLowerCase()
+                    .includes(keyword);
+
+            const matchKategori =
+                kategori === "all" || String(laporan.id_kategori) === kategori;
+
+            const matchTanggal =
+                !tanggal ||
+                laporan.tgl_laporan === format(tanggal, "yyyy-MM-dd");
+
+            const matchPelapor =
+                pelapor === "all" || String(laporan.user?.id_user) === pelapor;
+
+            return matchSearch && matchKategori && matchTanggal && matchPelapor;
+        });
+    }, [laporans, search, kategori, tanggal, pelapor]);
+
+    const truncate = (text: string, max = 80) =>
+        text.length > max ? text.slice(0, max) + "…" : text;
+
+    const formatDate = (date: string) =>
+        new Date(date).toLocaleDateString("id-ID", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+        });
+
+    const handleDelete = (id_laporan: number, judul_laporan: string) => {
+        if (
+            confirm(
+                `Apakah yakin ingin menghapus data laporan = ${id_laporan} ${judul_laporan}?`,
+            )
+        ) {
+            destroy(route("laporans.destroy", id_laporan));
+        }
+    };
+
+    return (
+        <AuthenticatedLayout
+            role="user"
+            breadcrumbs={[{ label: "Riwayat Laporan" }]}
+            header={
+                <div>
+                    <h1 className="text-2xl md:-ms-0.5 font-bold">
+                        Riwayat Laporan
+                    </h1>
+                    <p className="font-italic text-md">
+                        Lihat semua data Laporan yang telah dibuat
+                    </p>
+                </div>
+            }
+        >
+            <Head title="Riwayat laporan" />
+
+            {/* Flash Message */}
+            {flash?.message && (
+                <Alert className="space-x-2 rounded-xl">
+                    <CheckCircle2Icon />
+                    <AlertTitle>Success!</AlertTitle>
+                    <AlertDescription>{flash.message}</AlertDescription>
+                </Alert>
+            )}
+
+            <Card className="shadow-sm">
+                <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4 border-b">
+                    <Input
+                        placeholder="Cari laporan..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="w-full md:w-64 shadow-none focus:shadow-sm text-sm"
+                    />
+                    <div className="flex flex-col md:flex-row gap-4 md:gap-4">
+                        {/* Filter Tanggal */}
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    className={cn(
+                                        "w-full md:w-48 justify-start text-left font-normal shadow-none rounded-xl",
+                                        !tanggal && "text-foreground",
+                                    )}
+                                >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {tanggal
+                                        ? format(tanggal, "dd MMM yyyy")
+                                        : "Pilih Tanggal"}
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent
+                                className="w-auto p-0"
+                                align="start"
+                            >
+                                <Calendar
+                                    mode="single"
+                                    selected={tanggal}
+                                    onSelect={setTanggal}
+                                    initialFocus
+                                />
+                            </PopoverContent>
+                        </Popover>
+
+                        {/* Filter Laporan */}
+                        <Select value={pelapor} onValueChange={setPelapor}>
+                            <SelectTrigger className="w-full md:w-48 shadow-none">
+                                <SelectValue placeholder="Filter Pelapor" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">
+                                    Semua Pelapor
+                                </SelectItem>
+
+                                {pelaporList.map((user) => (
+                                    <SelectItem
+                                        key={user.id}
+                                        value={String(user.id)}
+                                    >
+                                        {user.nama}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+
+                        {/* Filter Kategori */}
+                        <Select value={kategori} onValueChange={setKategori}>
+                            <SelectTrigger className="w-full md:w-48 shadow-none">
+                                <SelectValue placeholder="Filter Kategori" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">
+                                    Semua Kategori
+                                </SelectItem>
+
+                                {kategoris.map((kategori) => (
+                                    <SelectItem
+                                        key={kategori.id_kategori}
+                                        value={String(kategori.id_kategori)}
+                                    >
+                                        {kategori.nama_kategori}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+
+                        <Button
+                            asChild
+                            className="rounded-xl shadow-none"
+                            disabled={processing}
+                        >
+                            <Link href={route("laporans.create")}>
+                                <Plus />
+                                Buat Laporan
+                            </Link>
+                        </Button>
+                    </div>
+                </CardHeader>
+
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="w-12 text-center">
+                                    No
+                                </TableHead>
+                                <TableHead className="w-32 text-center">
+                                    Gambar
+                                </TableHead>
+                                <TableHead>Judul</TableHead>
+                                <TableHead>Pelapor</TableHead>
+                                <TableHead>Kategori</TableHead>
+                                <TableHead>Tanggal</TableHead>
+                                <TableHead>Isi</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {filteredLaporans.length === 0 ? (
+                                <TableRow>
+                                    <TableCell
+                                        colSpan={7}
+                                        className="py-6 text-center text-muted-foreground"
+                                    >
+                                        Data laporan tidak ditemukan
+                                    </TableCell>
+                                </TableRow>
+                            ) : (
+                                filteredLaporans.map((laporan, index) => (
+                                    <TableRow key={laporan.id_laporan}>
+                                        <TableCell className="text-center">
+                                            {index + 1}
+                                        </TableCell>
+
+                                        {/* Gambar */}
+                                        <TableCell className="text-center">
+                                            <img
+                                                src={
+                                                    laporan.image
+                                                        ? `/storage/${laporan.image}`
+                                                        : "/storage/noimage.png"
+                                                }
+                                                alt={laporan.judul_laporan}
+                                                className="h-20 w-20 rounded-lg object-cover mx-auto border"
+                                            />
+                                        </TableCell>
+
+                                        <TableCell className="font-medium">
+                                            {laporan.judul_laporan}
+                                        </TableCell>
+
+                                        {/* Pelapor */}
+                                        <TableCell>
+                                            {laporan.user?.nama_user ?? "-"}
+                                        </TableCell>
+
+                                        {/* Kategori */}
+                                        <TableCell>
+                                            <Badge variant="outline">
+                                                {laporan.kategori
+                                                    ?.nama_kategori ?? "-"}
+                                            </Badge>
+                                        </TableCell>
+
+                                        <TableCell>
+                                            {formatDate(laporan.tgl_laporan)}
+                                        </TableCell>
+
+                                        <TableCell className="max-w-xs text-sm text-muted-foreground">
+                                            {truncate(laporan.isi_laporan)}
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            )}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
+        </AuthenticatedLayout>
+    );
+}
