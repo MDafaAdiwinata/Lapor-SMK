@@ -35,41 +35,15 @@ const userNavData = {
         },
         {
             title: "Buat Laporan",
-            url: "/laporan/create",
+            url: "/users/laporans",
             icon: FileText,
-            items: [
-                {
-                    title: "Form Laporan",
-                    url: "/laporan/create",
-                },
-                {
-                    title: "Draft Laporan",
-                    url: "/laporan/draft",
-                },
-            ],
+            isActive: true,
         },
         {
-            title: "Riwayat Laporan",
-            url: "/laporan/history",
+            title: "Histori Laporan",
+            url: "/users/history",
             icon: History,
-            items: [
-                {
-                    title: "Semua Laporan",
-                    url: "/laporan/history",
-                },
-                {
-                    title: "Menunggu",
-                    url: "/laporan/history?status=pending",
-                },
-                {
-                    title: "Diproses",
-                    url: "/laporan/history?status=processing",
-                },
-                {
-                    title: "Selesai",
-                    url: "/laporan/history?status=completed",
-                },
-            ],
+            isActive: true,
         },
     ],
 };
