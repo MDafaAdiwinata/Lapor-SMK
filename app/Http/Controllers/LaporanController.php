@@ -88,7 +88,7 @@ class LaporanController extends Controller
             'id_user' => $request->id_user,
             'id_kategori' => $request->id_kategori,
         ];
-        
+
         if ($request->hasFile('image')) {
 
             // hapus gambar lama
@@ -107,5 +107,19 @@ class LaporanController extends Controller
         return redirect()
             ->route('laporans.index')
             ->with('message', 'Laporan berhasil diperbarui ✨');
+    }
+
+    public function destroy(Laporan $laporan)
+    {
+
+        // Jika image ada, maka hapus
+        if ($laporan->image) {
+            if (Storage::disk('public')->exists($laporan->image)) {
+                Storage::disk('public')->delete($laporan->image);
+            }
+        }
+
+        $laporan->delete();
+        return redirect()->route('laporans.index')->with('message', 'Laporan berhasil dihapus! 🥳.');
     }
 }
