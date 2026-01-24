@@ -13,6 +13,15 @@ import { Card, CardContent, CardHeader } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { Badge } from "@/Components/ui/badge";
+import { Calendar } from "@/Components/ui/calendar";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/Components/ui/popover";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 import {
     Select,
     SelectContent,
@@ -59,6 +68,23 @@ export default function Index() {
     const { delete: destroy, processing } = useForm({});
     const [search, setSearch] = useState("");
     const [kategori, setKategori] = useState<string>("all");
+    const [tanggal, setTanggal] = useState<Date | undefined>();
+    const [pelapor, setPelapor] = useState<string>("all");
+
+    const pelaporList = useMemo(() => {
+        const map = new Map<number, string>();
+
+        laporans.forEach((laporan) => {
+            if (laporan.user) {
+                map.set(laporan.user.id_user, laporan.user.nama_user);
+            }
+        });
+
+        return Array.from(map.entries()).map(([id, nama]) => ({
+            id,
+            nama,
+        }));
+    }, [laporans]);
 
     const filteredLaporans = useMemo(() => {
         return laporans.filter((laporan) => {
@@ -75,9 +101,16 @@ export default function Index() {
             const matchKategori =
                 kategori === "all" || String(laporan.id_kategori) === kategori;
 
-            return matchSearch && matchKategori;
+            const matchTanggal =
+                !tanggal ||
+                laporan.tgl_laporan === format(tanggal, "yyyy-MM-dd");
+
+            const matchPelapor =
+                pelapor === "all" || String(laporan.user?.id_user) === pelapor;
+
+            return matchSearch && matchKategori && matchTanggal && matchPelapor;
         });
-    }, [laporans, search, kategori]);
+    }, [laporans, search, kategori, tanggal, pelapor]);
 
     const truncate = (text: string, max = 80) =>
         text.length > max ? text.slice(0, max) + "…" : text;
@@ -133,7 +166,58 @@ export default function Index() {
                         onChange={(e) => setSearch(e.target.value)}
                         className="w-full md:w-64 shadow-none focus:shadow-sm text-sm"
                     />
-                    <div className="flex flex-col md:flex-row gap-4 md:gap-2">
+                    <div className="flex flex-col md:flex-row gap-4 md:gap-4">
+                        {/* Filter Tanggal */}
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    className={cn(
+                                        "w-full md:w-48 justify-start text-left font-normal shadow-none rounded-xl",
+                                        !tanggal && "text-foreground",
+                                    )}
+                                >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {tanggal
+                                        ? format(tanggal, "dd MMM yyyy")
+                                        : "Pilih Tanggal"}
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent
+                                className="w-auto p-0"
+                                align="start"
+                            >
+                                <Calendar
+                                    mode="single"
+                                    selected={tanggal}
+                                    onSelect={setTanggal}
+                                    initialFocus
+                                />
+                            </PopoverContent>
+                        </Popover>
+
+                        {/* Filter Laporan */}
+                        <Select value={pelapor} onValueChange={setPelapor}>
+                            <SelectTrigger className="w-full md:w-48 shadow-none">
+                                <SelectValue placeholder="Filter Pelapor" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">
+                                    Semua Pelapor
+                                </SelectItem>
+
+                                {pelaporList.map((user) => (
+                                    <SelectItem
+                                        key={user.id}
+                                        value={String(user.id)}
+                                    >
+                                        {user.nama}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+
+                        {/* Filter Kategori */}
                         <Select value={kategori} onValueChange={setKategori}>
                             <SelectTrigger className="w-full md:w-48 shadow-none">
                                 <SelectValue placeholder="Filter Kategori" />
