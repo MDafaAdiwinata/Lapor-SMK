@@ -1,6 +1,8 @@
 import { PropsWithChildren, ReactNode } from "react";
 import { AppSidebar } from "@/Components/app-sidebar";
 import { Separator } from "@/Components/ui/separator";
+import { Button } from "@/Components/ui/button";
+import { RefreshCcw } from "lucide-react";
 import {
     SidebarInset,
     SidebarProvider,
@@ -33,13 +35,15 @@ export default function AuthenticatedLayout({
             <AppSidebar role={role} />
             <SidebarInset>
                 {/* Sidebar breadcumb */}
-                <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 m-2 md:m-4">
+                <header className="flex h-16 shrink-0 items-center justify-between gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 m-2 md:m-4">
+                    {/* Kiri: Sidebar + Breadcrumb */}
                     <div className="flex items-center gap-2 px-4">
                         <SidebarTrigger className="-ml-1" />
                         <Separator
                             orientation="vertical"
                             className="mr-2 h-4"
                         />
+
                         {breadcrumbs.length > 0 && (
                             <Breadcrumb>
                                 <BreadcrumbList>
@@ -61,6 +65,7 @@ export default function AuthenticatedLayout({
                                                     </BreadcrumbPage>
                                                 )}
                                             </BreadcrumbItem>
+
                                             {index < breadcrumbs.length - 1 && (
                                                 <BreadcrumbSeparator className="hidden md:block" />
                                             )}
@@ -69,6 +74,19 @@ export default function AuthenticatedLayout({
                                 </BreadcrumbList>
                             </Breadcrumb>
                         )}
+                    </div>
+
+                    {/* Kanan: Refresh Button */}
+                    <div className="pr-4">
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            className="rounded-xl w-full px-4 flex items-center justify-center"
+                            onClick={() => window.location.reload()}
+                        >
+                            <RefreshCcw className="h-4 w-4 transition-transform hover:rotate-180" />
+                            <span>Refresh</span>
+                        </Button>
                     </div>
                 </header>
 
