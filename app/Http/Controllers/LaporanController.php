@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Laporan;
 use App\Models\Kategori;
@@ -15,6 +16,13 @@ class LaporanController extends Controller
         return Inertia::render('Admin/Laporans/Index', [
             'laporans' => $laporans,
             'kategoris' => $kategoris,
+        ]);
+    }
+
+    public function create() {
+        return Inertia::render('Admin/Laporans/Create', [
+            'users' => User::select('id_user', 'nama_user')->orderBy('nama_user')->get(),
+            'kategoris' => Kategori::select('id_kategori', 'nama_kategori')->orderBy('nama_kategori')->get(),
         ]);
     }
 }

@@ -100,19 +100,19 @@ export default function Index() {
     return (
         <AuthenticatedLayout
             role="admin"
-            breadcrumbs={[{ label: "Kelola User" }]}
+            breadcrumbs={[{ label: "Kelola Laporan" }]}
             header={
                 <div>
                     <h1 className="text-2xl md:-ms-0.5 font-bold">
-                        Kelola User
+                        Kelola Laporan
                     </h1>
                     <p className="font-italic text-md">
-                        Kelola semua data user dengan mudah
+                        Kelola semua data Laporan dengan mudah
                     </p>
                 </div>
             }
         >
-            <Head title="Kelola User" />
+            <Head title="Kelola Laporan" />
 
             {/* Flash Message */}
             {flash?.message && (
@@ -126,7 +126,7 @@ export default function Index() {
             <Card className="shadow-sm">
                 <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4 border-b">
                     <Input
-                        placeholder="Cari nama atau email..."
+                        placeholder="Cari laporan atau nama user..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="w-full md:w-64 shadow-none focus:shadow-sm text-sm"
@@ -155,6 +155,7 @@ export default function Index() {
                         <Button
                             asChild
                             className="rounded-xl shadow-none w-fit"
+                            disabled={processing}
                         >
                             <Link href={route("laporans.create")}>Tambah</Link>
                         </Button>
