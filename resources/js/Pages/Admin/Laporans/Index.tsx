@@ -36,12 +36,12 @@ interface Laporan {
     user?: {
         id_user: number;
         nama_user: string;
-    }
+    };
 
     kategori?: {
         id_kategori: number;
         nama_kategori: string;
-    }
+    };
 }
 
 interface Kategori {
@@ -62,13 +62,15 @@ export default function Index() {
 
     const filteredLaporans = useMemo(() => {
         return laporans.filter((laporan) => {
+            const keyword = search.toLowerCase();
+
             const matchSearch =
-                laporan.judul_laporan
-                    .toLowerCase()
-                    .includes(search.toLowerCase()) ||
-                laporan.isi_laporan
-                    .toLowerCase()
-                    .includes(search.toLowerCase());
+                laporan.judul_laporan.toLowerCase().includes(keyword) ||
+                laporan.isi_laporan.toLowerCase().includes(keyword) ||
+                laporan.user?.nama_user?.toLowerCase().includes(keyword) ||
+                laporan.kategori?.nama_kategori
+                    ?.toLowerCase()
+                    .includes(keyword);
 
             const matchKategori =
                 kategori === "all" || String(laporan.id_kategori) === kategori;
@@ -169,6 +171,9 @@ export default function Index() {
                                 <TableHead className="w-12 text-center">
                                     No
                                 </TableHead>
+                                <TableHead className="w-32 text-center">
+                                    Gambar
+                                </TableHead>
                                 <TableHead>Judul</TableHead>
                                 <TableHead>Pelapor</TableHead>
                                 <TableHead>Kategori</TableHead>
@@ -194,6 +199,19 @@ export default function Index() {
                                     <TableRow key={laporan.id_laporan}>
                                         <TableCell className="text-center">
                                             {index + 1}
+                                        </TableCell>
+
+                                        {/* Gambar */}
+                                        <TableCell className="text-center">
+                                            <img
+                                                src={
+                                                    laporan.image
+                                                        ? `/storage/${laporan.image}`
+                                                        : "/storage/noimage.png"
+                                                }
+                                                alt={laporan.judul_laporan}
+                                                className="h-20 w-20 rounded-lg object-cover mx-auto border"
+                                            />
                                         </TableCell>
 
                                         <TableCell className="font-medium">
@@ -224,7 +242,8 @@ export default function Index() {
                                         <TableCell className="text-right space-x-2">
                                             <Button
                                                 variant="outline"
-                                                size="sm"
+                                                size="md"
+                                                className="rounded-xl"
                                                 asChild
                                             >
                                                 <Link
@@ -239,7 +258,8 @@ export default function Index() {
 
                                             <Button
                                                 variant="destructive"
-                                                size="sm"
+                                                size="md"
+                                                className="rounded-xl"
                                                 onClick={() =>
                                                     handleDelete(
                                                         laporan.id_laporan,
