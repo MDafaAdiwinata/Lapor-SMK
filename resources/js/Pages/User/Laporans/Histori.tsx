@@ -38,6 +38,7 @@ interface Laporan {
     judul_laporan: string;
     isi_laporan: string;
     tgl_laporan: string;
+    status: string;
     image?: string | null;
     id_user: number;
     id_kategori: number;
@@ -69,22 +70,7 @@ export default function Index() {
     const [search, setSearch] = useState("");
     const [kategori, setKategori] = useState<string>("all");
     const [tanggal, setTanggal] = useState<Date | undefined>();
-    const [pelapor, setPelapor] = useState<string>("all");
-
-    const pelaporList = useMemo(() => {
-        const map = new Map<number, string>();
-
-        laporans.forEach((laporan) => {
-            if (laporan.user) {
-                map.set(laporan.user.id_user, laporan.user.nama_user);
-            }
-        });
-
-        return Array.from(map.entries()).map(([id, nama]) => ({
-            id,
-            nama,
-        }));
-    }, [laporans]);
+    const [status, setStatus] = useState<string>("all");
 
     const filteredLaporans = useMemo(() => {
         return laporans.filter((laporan) => {
@@ -93,7 +79,6 @@ export default function Index() {
             const matchSearch =
                 laporan.judul_laporan.toLowerCase().includes(keyword) ||
                 laporan.isi_laporan.toLowerCase().includes(keyword) ||
-                laporan.user?.nama_user?.toLowerCase().includes(keyword) ||
                 laporan.kategori?.nama_kategori
                     ?.toLowerCase()
                     .includes(keyword);
@@ -105,12 +90,11 @@ export default function Index() {
                 !tanggal ||
                 laporan.tgl_laporan === format(tanggal, "yyyy-MM-dd");
 
-            const matchPelapor =
-                pelapor === "all" || String(laporan.user?.id_user) === pelapor;
+            const matchStatus = status === "all" || laporan.status === status;
 
-            return matchSearch && matchKategori && matchTanggal && matchPelapor;
+            return matchSearch && matchKategori && matchTanggal && matchStatus;
         });
-    }, [laporans, search, kategori, tanggal, pelapor]);
+    }, [laporans, search, kategori, tanggal, status]);
 
     const truncate = (text: string, max = 80) =>
         text.length > max ? text.slice(0, max) + "…" : text;
@@ -196,24 +180,20 @@ export default function Index() {
                             </PopoverContent>
                         </Popover>
 
-                        {/* Filter Laporan */}
-                        <Select value={pelapor} onValueChange={setPelapor}>
+                        {/* Filter Status */}
+                        <Select value={status} onValueChange={setStatus}>
                             <SelectTrigger className="w-full md:w-48 shadow-none">
-                                <SelectValue placeholder="Filter Pelapor" />
+                                <SelectValue placeholder="Filter Status" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="all">
-                                    Semua Pelapor
+                                    Semua Status
                                 </SelectItem>
-
-                                {pelaporList.map((user) => (
-                                    <SelectItem
-                                        key={user.id}
-                                        value={String(user.id)}
-                                    >
-                                        {user.nama}
-                                    </SelectItem>
-                                ))}
+                                <SelectItem value="pending">
+                                    Menunggu
+                                </SelectItem>
+                                <SelectItem value="proses">Diproses</SelectItem>
+                                <SelectItem value="selesai">Selesai</SelectItem>
                             </SelectContent>
                         </Select>
 
@@ -264,6 +244,7 @@ export default function Index() {
                                 <TableHead>Judul</TableHead>
                                 <TableHead>Pelapor</TableHead>
                                 <TableHead>Kategori</TableHead>
+                                <TableHead>Status</TableHead>
                                 <TableHead>Tanggal</TableHead>
                                 <TableHead>Isi</TableHead>
                             </TableRow>
@@ -312,6 +293,26 @@ export default function Index() {
                                             <Badge variant="outline">
                                                 {laporan.kategori
                                                     ?.nama_kategori ?? "-"}
+                                            </Badge>
+                                        </TableCell>
+
+                                        {/* Status */}
+                                        <TableCell>
+                                            <Badge
+                                                variant="outline"
+                                                className={cn(
+                                                    laporan.status ===
+                                                        "pending" &&
+                                                        "border-yellow-500 text-yellow-600",
+                                                    laporan.status ===
+                                                        "proses" &&
+                                                        "border-blue-500 text-blue-600",
+                                                    laporan.status ===
+                                                        "selesai" &&
+                                                        "border-green-500 text-green-600",
+                                                )}
+                                            >
+                                                {laporan.status}
                                             </Badge>
                                         </TableCell>
 

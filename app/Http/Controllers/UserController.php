@@ -43,7 +43,7 @@ class UserController extends Controller
             'role' => $request->role ?? 'user',
         ]);
 
-        return redirect()->route('users.index')->with('message', 'User berhasil ditambahkan! 🥳');
+        return redirect()->route('admin.users.index')->with('message', 'User berhasil ditambahkan! 🥳');
     }
 
     public function edit(User $user)
@@ -85,13 +85,13 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('users.index')->with('message', 'User berhasil di ubah! 🤩');
+        return redirect()->route('admin.users.index')->with('message', 'User berhasil di ubah! 🤩');
     }
 
     // Delete data
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('users.index')->with('message', 'User berhasil dihapus! 🤩');
+        return redirect()->route('admin.users.index')->with('message', 'User berhasil dihapus! 🤩');
     }
 }
