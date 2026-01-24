@@ -1,7 +1,17 @@
+import { useState } from "react";
 import { Head, Link, useForm } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
+import { Textarea } from "@/Components/ui/textarea";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/Components/ui/calendar";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/Components/ui/popover";
 import {
     Select,
     SelectContent,
@@ -10,150 +20,207 @@ import {
     SelectValue,
 } from "@/Components/ui/select";
 import InputLabel from "@/Components/InputLabel";
-import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
-import { CircleAlert } from "lucide-react";
-import { useEffect } from "react";
+
+interface Laporan {
+    id_laporan: number;
+    judul_laporan: string;
+    isi_laporan: string;
+    tgl_laporan: string;
+    image?: string | null;
+    id_user: number;
+    id_kategori: number;
+}
 
 interface User {
     id_user: number;
     nama_user: string;
-    email: string;
-    role: string;
 }
 
-interface Props {
-    user: User;
+interface Kategori {
+    id_kategori: number;
+    nama_kategori: string;
 }
 
-export default function Edit({ user }: Props) {
-    const { data, setData, post, processing, errors } = useForm({
-        nama_user: user.nama_user ?? "",
-        email: user.email ?? "",
-        password: "",
-        role: user.role ?? "",
-        _method: "PUT",
+type EditLaporanProps = {
+    laporan: Laporan;
+    users: User[];
+    kategoris: Kategori[];
+};
+
+
+export default function Edit({ laporan, users, kategoris }: EditLaporanProps) {
+    const [preview, setPreview] = useState<string>(
+        laporan.image ? `/storage/${laporan.image}` : "/storage/noimage.png",
+    );
+
+    const { data, setData, put, processing, errors } = useForm({
+        judul_laporan: laporan.judul_laporan,
+        isi_laporan: laporan.isi_laporan,
+        tgl_laporan: laporan.tgl_laporan,
+        image: null as File | null,
+        id_user: String(laporan.id_user),
+        id_kategori: String(laporan.id_kategori),
     });
-
-    useEffect(() => {
-        if (user) {
-            setData({
-                nama_user: user.nama_user ?? "",
-                email: user.email ?? "",
-                password: "",
-                role: user.role ?? "",
-                _method: "PUT",
-            });
-        }
-    }, [user]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("users.update", user.id_user));
+        put(route("laporans.update", laporan.id_laporan), {
+            forceFormData: true,
+        });
     };
 
     return (
         <AuthenticatedLayout
             role="admin"
             breadcrumbs={[
-                { label: "Kelola User", href: "/admin/users" },
-                { label: "Edit User" },
+                { label: "Kelola Laporan", href: "/admin/laporans" },
+                { label: "Edit Laporan" },
             ]}
             header={
                 <div>
-                    <h1 className="text-2xl font-bold">Edit User</h1>
-                    <p className="text-md">Ubah data user ke dalam sistem</p>
+                    <h1 className="text-2xl font-bold">Edit Laporan</h1>
+                    <p className="text-md">Perbarui data laporan</p>
                 </div>
             }
         >
-            <Head title="Edit User" />
+            <Head title="Edit Laporan" />
 
-            {/* kalo ada eror, tampilkan alert */}
-            {Object.keys(errors).length > 0 && (
-                <Alert variant="destructive" className="mb-2 max-w-xl rounded-xl space-x-2">
-                    <CircleAlert />
-                    <AlertTitle>Warning</AlertTitle>
-                    <AlertDescription>
-                        <ul>
-                            {Object.entries(errors).map(([key, message]) => (
-                                <li key={key}>{message as string}</li>
-                            ))}
-                        </ul>
-                    </AlertDescription>
-                </Alert>
-            )}
             <form
                 onSubmit={handleSubmit}
-                className="max-w-xl flex flex-col gap-4"
+                className="max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-12"
             >
-                {/* Nama */}
-                <div className="space-y-1">
-                    <InputLabel htmlFor="nama_user" value="Nama User">
-                        Nama User
-                    </InputLabel>
-                    <Input
-                        value={data.nama_user}
-                        onChange={(e) => setData("nama_user", e.target.value)}
-                        placeholder="Masukkan nama user"
-                    />
+                {/* RIGHT */}
+                <div className="space-y-2">
+                    <InputLabel>Gambar</InputLabel>
+
+                    <div className="flex flex-col gap-4">
+                        <img
+                            src={preview}
+                            className="w-full rounded-xl border object-cover"
+                        />
+
+                        <Input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                                const file = e.target.files?.[0] || null;
+                                setData("image", file);
+
+                                if (file) {
+                                    setPreview(URL.createObjectURL(file));
+                                }
+                            }}
+                        />
+                    </div>
                 </div>
 
-                {/* Email */}
-                <div className="space-y-1">
-                    <InputLabel htmlFor="email" value="email">
-                        Email
-                    </InputLabel>
-                    <Input
-                        type="email"
-                        value={data.email}
-                        onChange={(e) => setData("email", e.target.value)}
-                        placeholder="user@email.com"
-                    />
-                </div>
+                {/* LEFT */}
+                <div className="space-y-4">
+                    <div>
+                        <InputLabel className="mt-2">Judul Laporan</InputLabel>
+                        <Input
+                            value={data.judul_laporan}
+                            onChange={(e) =>
+                                setData("judul_laporan", e.target.value)
+                            }
+                        />
+                    </div>
 
-                {/* Password */}
-                <div className="space-y-1">
-                    <InputLabel htmlFor="password" value="password">
-                        Password
-                    </InputLabel>
-                    <Input
-                        type="password"
-                        value={data.password}
-                        onChange={(e) => setData("password", e.target.value)}
-                        placeholder="••••••••"
-                    />
-                </div>
+                    <div>
+                        <InputLabel>Isi Laporan</InputLabel>
+                        <Textarea
+                            rows={4}
+                            value={data.isi_laporan}
+                            onChange={(e) =>
+                                setData("isi_laporan", e.target.value)
+                            }
+                        />
+                    </div>
 
-                {/* Role */}
-                <div className="space-y-1">
-                    <InputLabel htmlFor="role">Role</InputLabel>
-                    <Select
-                        value={data.role}
-                        onValueChange={(value) => setData("role", value)}
-                    >
-                        <SelectTrigger className="shadow-none">
-                            <SelectValue placeholder="Pilih role" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="admin">Admin</SelectItem>
-                            <SelectItem value="user">User</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
+                    <div>
+                        <InputLabel>Tanggal</InputLabel>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    className="w-full justify-start"
+                                >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {format(
+                                        new Date(data.tgl_laporan),
+                                        "dd MMM yyyy",
+                                    )}
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="p-0">
+                                <Calendar
+                                    mode="single"
+                                    selected={new Date(data.tgl_laporan)}
+                                    onSelect={(date) =>
+                                        setData(
+                                            "tgl_laporan",
+                                            date
+                                                ? format(date, "yyyy-MM-dd")
+                                                : "",
+                                        )
+                                    }
+                                />
+                            </PopoverContent>
+                        </Popover>
+                    </div>
 
-                {/* Actions */}
-                <div className="flex justify-end gap-2 pt-4">
-                    <Button variant="outline" asChild>
-                        <Link href="/admin/users" className="rounded-xl">
-                            Batal
-                        </Link>
-                    </Button>
-                    <Button
-                        type="submit"
-                        className="rounded-xl"
-                        disabled={processing}
-                    >
-                        Simpan
-                    </Button>
+                    <div>
+                        <InputLabel>Pelapor</InputLabel>
+                        <Select
+                            value={data.id_user}
+                            onValueChange={(v) => setData("id_user", v)}
+                        >
+                            <SelectTrigger>
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {users.map((u) => (
+                                    <SelectItem
+                                        key={u.id_user}
+                                        value={String(u.id_user)}
+                                    >
+                                        {u.nama_user}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <div>
+                        <InputLabel>Kategori</InputLabel>
+                        <Select
+                            value={data.id_kategori}
+                            onValueChange={(v) => setData("id_kategori", v)}
+                        >
+                            <SelectTrigger>
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {kategoris.map((k) => (
+                                    <SelectItem
+                                        key={k.id_kategori}
+                                        value={String(k.id_kategori)}
+                                    >
+                                        {k.nama_kategori}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <div className="flex justify-end gap-2 pt-4">
+                        <Button variant="outline" asChild size="md" className="rounded-xl">
+                            <Link href="/admin/laporans">Batal</Link>
+                        </Button>
+                        <Button type="submit" className="rounded-xl" size="md" disabled={processing}>
+                            Update
+                        </Button>
+                    </div>
                 </div>
             </form>
         </AuthenticatedLayout>

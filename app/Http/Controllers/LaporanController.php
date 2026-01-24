@@ -58,4 +58,14 @@ class LaporanController extends Controller
             ->route('laporans.index')
             ->with('message', 'Laporan Berhasil ditambahkan! 🥳');
     }
+
+    // Form Edit Data
+    public function edit(Laporan $laporan)
+    {
+        return inertia('Admin/Laporans/Edit', [
+            'laporan' => $laporan->load(['user', 'kategori']),
+            'users' => User::all(),
+            'kategoris' => Kategori::all(),
+        ]);
+    }
 }
