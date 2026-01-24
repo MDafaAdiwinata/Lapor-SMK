@@ -59,7 +59,7 @@ const adminNavData = {
         },
         {
             title: "Kelola User",
-            url: "/admin/users",
+            url: route('admin.users.index'),
             icon: Users,
             isActive: true,
         },

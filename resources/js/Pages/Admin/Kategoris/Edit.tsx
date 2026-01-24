@@ -44,7 +44,7 @@ export default function Edit({ kategori }: Props) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("kategoris.update", kategori.id_kategori));
+        post(route("admin.kategoris.update", kategori.id_kategori));
     };
 
     return (

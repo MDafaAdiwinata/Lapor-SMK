@@ -38,6 +38,7 @@ interface Laporan {
     judul_laporan: string;
     isi_laporan: string;
     tgl_laporan: string;
+    status: string;
     image?: string | null;
     id_user: number;
     id_kategori: number;
@@ -68,6 +69,7 @@ export default function Index() {
     const { delete: destroy, processing } = useForm({});
     const [search, setSearch] = useState("");
     const [kategori, setKategori] = useState<string>("all");
+    const [status, setStatus] = useState<string>("all");
     const [tanggal, setTanggal] = useState<Date | undefined>();
     const [pelapor, setPelapor] = useState<string>("all");
 
@@ -108,9 +110,17 @@ export default function Index() {
             const matchPelapor =
                 pelapor === "all" || String(laporan.user?.id_user) === pelapor;
 
-            return matchSearch && matchKategori && matchTanggal && matchPelapor;
+            const matchStatus = status === "all" || laporan.status === status;
+
+            return (
+                matchSearch &&
+                matchKategori &&
+                matchTanggal &&
+                matchPelapor &&
+                matchStatus
+            );
         });
-    }, [laporans, search, kategori, tanggal, pelapor]);
+    }, [laporans, search, kategori, tanggal, pelapor, status]);
 
     const truncate = (text: string, max = 80) =>
         text.length > max ? text.slice(0, max) + "…" : text;
@@ -128,7 +138,7 @@ export default function Index() {
                 `Apakah yakin ingin menghapus data laporan = ${id_laporan} ${judul_laporan}?`,
             )
         ) {
-            destroy(route("laporans.destroy", id_laporan));
+            destroy(route("admin.laporans.destroy", id_laporan));
         }
     };
 
@@ -166,7 +176,7 @@ export default function Index() {
                         onChange={(e) => setSearch(e.target.value)}
                         className="w-full md:w-64 shadow-none focus:shadow-sm text-sm"
                     />
-                    <div className="flex flex-col md:flex-row gap-4 md:gap-4">
+                    <div className="flex flex-col md:flex-row gap-2">
                         {/* Filter Tanggal */}
                         <Popover>
                             <PopoverTrigger asChild>
@@ -195,6 +205,21 @@ export default function Index() {
                                 />
                             </PopoverContent>
                         </Popover>
+
+                        {/* Filter Status */}
+                        <Select value={status} onValueChange={setStatus}>
+                            <SelectTrigger className="w-full md:w-40 shadow-none">
+                                <SelectValue placeholder="Filter Status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">
+                                    Semua Status
+                                </SelectItem>
+                                <SelectItem value="pending">Pending</SelectItem>
+                                <SelectItem value="proses">Proses</SelectItem>
+                                <SelectItem value="selesai">Selesai</SelectItem>
+                            </SelectContent>
+                        </Select>
 
                         {/* Filter Laporan */}
                         <Select value={pelapor} onValueChange={setPelapor}>
@@ -237,13 +262,27 @@ export default function Index() {
                                 ))}
                             </SelectContent>
                         </Select>
-
+                        <Button
+                            variant="outline"
+                            className="rounded-xl ms-4"
+                            onClick={() => {
+                                setSearch("");
+                                setKategori("all");
+                                setPelapor("all");
+                                setStatus("all");
+                                setTanggal(undefined);
+                            }}
+                        >
+                            Reset
+                        </Button>
                         <Button
                             asChild
                             className="rounded-xl shadow-none w-fit"
                             disabled={processing}
                         >
-                            <Link href={route("laporans.create")}>Tambah</Link>
+                            <Link href={route("admin.laporans.create")}>
+                                Tambah
+                            </Link>
                         </Button>
                     </div>
                 </CardHeader>
@@ -258,9 +297,12 @@ export default function Index() {
                                 <TableHead className="w-32 text-center">
                                     Gambar
                                 </TableHead>
-                                <TableHead>Judul</TableHead>
+                                <TableHead className="text-center">
+                                    Judul
+                                </TableHead>
                                 <TableHead>Pelapor</TableHead>
                                 <TableHead>Kategori</TableHead>
+                                <TableHead>Status</TableHead>
                                 <TableHead>Tanggal</TableHead>
                                 <TableHead>Isi</TableHead>
                                 <TableHead className="text-right">
@@ -298,7 +340,7 @@ export default function Index() {
                                             />
                                         </TableCell>
 
-                                        <TableCell className="font-medium">
+                                        <TableCell className="font-medium text-center">
                                             {laporan.judul_laporan}
                                         </TableCell>
 
@@ -312,6 +354,26 @@ export default function Index() {
                                             <Badge variant="outline">
                                                 {laporan.kategori
                                                     ?.nama_kategori ?? "-"}
+                                            </Badge>
+                                        </TableCell>
+
+                                        {/* Status */}
+                                        <TableCell>
+                                            <Badge
+                                                variant="outline"
+                                                className={cn(
+                                                    laporan.status ===
+                                                        "pending" &&
+                                                        "border-yellow-500 text-yellow-600",
+                                                    laporan.status ===
+                                                        "proses" &&
+                                                        "border-blue-500 text-blue-600",
+                                                    laporan.status ===
+                                                        "selesai" &&
+                                                        "border-green-500 text-green-600",
+                                                )}
+                                            >
+                                                {laporan.status}
                                             </Badge>
                                         </TableCell>
 
@@ -332,7 +394,7 @@ export default function Index() {
                                             >
                                                 <Link
                                                     href={route(
-                                                        "laporans.edit",
+                                                        "admin.laporans.edit",
                                                         laporan.id_laporan,
                                                     )}
                                                 >

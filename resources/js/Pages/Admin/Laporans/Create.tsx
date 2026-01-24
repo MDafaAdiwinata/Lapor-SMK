@@ -45,13 +45,14 @@ export default function Create({ users, kategoris }: CreateLaporanProps) {
         isi_laporan: "",
         tgl_laporan: "",
         image: null as File | null,
+        status: "pending",
         id_user: "",
         id_kategori: "",
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("laporans.store"), {
+        post(route("admin.laporans.store"), {
             forceFormData: true,
             onSuccess: () => {
                 setPreview("/storage/noimage.png");
@@ -251,6 +252,26 @@ export default function Create({ users, kategoris }: CreateLaporanProps) {
                                         {kategori.nama_kategori}
                                     </SelectItem>
                                 ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    {/* Status Laporan */}
+                    <div className="space-y-1">
+                        <InputLabel>Status Laporan</InputLabel>
+
+                        <Select
+                            value={data.status}
+                            onValueChange={(value) => setData("status", value)}
+                        >
+                            <SelectTrigger className="shadow-none">
+                                <SelectValue placeholder="Pilih status" />
+                            </SelectTrigger>
+
+                            <SelectContent>
+                                <SelectItem value="pending">Pending</SelectItem>
+                                <SelectItem value="proses">Proses</SelectItem>
+                                <SelectItem value="selesai">Selesai</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>

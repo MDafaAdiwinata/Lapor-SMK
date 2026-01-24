@@ -16,6 +16,16 @@ class DashboardController extends Controller
         return Inertia::render('Admin/Dashboard', [
             'totalKategori' => $totalKategori,
             'totalLaporan' => $totalLaporan,
+            'stats' => [
+                'total' => Laporan::count(),
+                'pending' => Laporan::where('status', 'pending')->count(),
+                'proses' => Laporan::where('status', 'proses')->count(),
+                'selesai' => Laporan::where('status', 'selesai')->count(),
+            ],
+            'latestLaporans' => Laporan::with(['user', 'kategori'])
+                ->orderByDesc('created_at')
+                ->limit(5)
+                ->get(),
         ]);
     }
 
@@ -23,14 +33,21 @@ class DashboardController extends Controller
     {
         $userId = Auth::id();
 
-        $laporanTerbaru = Laporan::with('kategori:id_kategori,nama_kategori')
-            ->where('id_user', $userId)
-            ->latest()
-            ->limit(5)
-            ->get();
+        $laporanQuery = Laporan::where('id_user', $userId);
 
         return Inertia::render('User/Dashboard', [
-            'laporanTerbaru' => $laporanTerbaru,
+            'laporanTerbaru' => Laporan::with('kategori:id_kategori,nama_kategori')
+                ->where('id_user', $userId)
+                ->latest()
+                ->limit(5)
+                ->get(),
+
+            'stats' => [
+                'total' => $laporanQuery->count(),
+                'pending' => (clone $laporanQuery)->where('status', 'pending')->count(),
+                'proses' => (clone $laporanQuery)->where('status', 'proses')->count(),
+                'selesai' => (clone $laporanQuery)->where('status', 'selesai')->count(),
+            ],
         ]);
     }
 }

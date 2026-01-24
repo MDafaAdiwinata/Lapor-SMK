@@ -26,6 +26,7 @@ interface Laporan {
     judul_laporan: string;
     isi_laporan: string;
     tgl_laporan: string;
+    status: "pending" | "proses" | "selesai";
     image?: string | null;
     id_user: number;
     id_kategori: number;
@@ -58,13 +59,14 @@ export default function Edit({ laporan, users, kategoris }: EditLaporanProps) {
         isi_laporan: laporan.isi_laporan,
         tgl_laporan: laporan.tgl_laporan,
         image: null as File | null,
+        status: String(laporan.status),
         id_user: String(laporan.id_user),
         id_kategori: String(laporan.id_kategori),
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(route("laporans.update", laporan.id_laporan), {
+        put(route("admin.laporans.update", laporan.id_laporan), {
             forceFormData: true,
         });
     };
@@ -213,11 +215,38 @@ export default function Edit({ laporan, users, kategoris }: EditLaporanProps) {
                         </Select>
                     </div>
 
+                    <div>
+                        <InputLabel>Status Laporan</InputLabel>
+                        <Select
+                            value={data.status}
+                            onValueChange={(v) => setData("status", v)}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Pilih status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="pending">Pending</SelectItem>
+                                <SelectItem value="proses">Proses</SelectItem>
+                                <SelectItem value="selesai">Selesai</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
                     <div className="flex justify-end gap-2 pt-4">
-                        <Button variant="outline" asChild size="md" className="rounded-xl">
+                        <Button
+                            variant="outline"
+                            asChild
+                            size="md"
+                            className="rounded-xl"
+                        >
                             <Link href="/admin/laporans">Batal</Link>
                         </Button>
-                        <Button type="submit" className="rounded-xl" size="md" disabled={processing}>
+                        <Button
+                            type="submit"
+                            className="rounded-xl"
+                            size="md"
+                            disabled={processing}
+                        >
                             Update
                         </Button>
                     </div>

@@ -34,7 +34,7 @@ class KategoriController extends Controller
             'keterangan' => $request->keterangan,
         ]);
 
-        return redirect()->route('kategoris.index')->with('message', 'Kategori Laporan berhasil ditambahkan! 🥳');
+        return redirect()->route('admin.kategoris.index')->with('message', 'Kategori Laporan berhasil ditambahkan! 🥳');
     }
 
     public function edit(Kategori $kategori)
@@ -58,13 +58,13 @@ class KategoriController extends Controller
 
         $kategori->save();
 
-        return redirect()->route('kategoris.index')->with('message', 'Kategori Laporan berhasil di ubah! 🤩');
+        return redirect()->route('admin.kategoris.index')->with('message', 'Kategori Laporan berhasil di ubah! 🤩');
     }
 
     // Delete data
     public function destroy(Kategori $kategori)
     {
         $kategori->delete();
-        return redirect()->route('kategoris.index')->with('message', 'Kategori Laporan berhasil dihapus! 🤩');
+        return redirect()->route('admin.kategoris.index')->with('message', 'Kategori Laporan berhasil dihapus! 🤩');
     }
 }

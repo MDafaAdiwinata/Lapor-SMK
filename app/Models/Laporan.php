@@ -13,6 +13,7 @@ class Laporan extends Model
         'isi_laporan',
         'tgl_laporan',
         'image',
+        'status',
         'id_user',
         'id_kategori',
     ];

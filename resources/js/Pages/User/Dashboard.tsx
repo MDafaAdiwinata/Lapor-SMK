@@ -37,8 +37,15 @@ interface Laporan {
 
 export default function Dashboard({
     laporanTerbaru = [],
+    stats,
 }: {
     laporanTerbaru: Laporan[];
+    stats: {
+        total: number;
+        pending: number;
+        proses: number;
+        selesai: number;
+    };
 }) {
     return (
         <AuthenticatedLayout
@@ -67,7 +74,9 @@ export default function Dashboard({
                         <FileText className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">12</div>
+                        <div className="text-2xl font-bold">
+                            {stats.total}
+                        </div>
                         <p className="text-xs text-muted-foreground">
                             Semua laporan yang pernah dibuat
                         </p>
@@ -82,7 +91,9 @@ export default function Dashboard({
                         <Clock className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">3</div>
+                        <div className="text-2xl font-bold">
+                            {stats.proses}
+                        </div>
                         <p className="text-xs text-muted-foreground">
                             Laporan dalam proses penanganan
                         </p>
@@ -97,7 +108,9 @@ export default function Dashboard({
                         <CheckCircle className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">9</div>
+                        <div className="text-2xl font-bold">
+                            {stats.selesai}
+                        </div>
                         <p className="text-xs text-muted-foreground">
                             Laporan yang sudah ditangani
                         </p>

@@ -60,7 +60,7 @@ export default function Index() {
                 `Apakah yakin ingin menghapus data user = ${id_user} ${nama_user}?`,
             )
         ) {
-            destroy(route("users.destroy", id_user));
+            destroy(route("admin.users.destroy", id_user));
         }
     };
 
@@ -109,7 +109,17 @@ export default function Index() {
                                 <SelectItem value="user">User</SelectItem>
                             </SelectContent>
                         </Select>
-                        <Link href={route("users.create")}>
+                        <Button
+                            variant="outline"
+                            className="rounded-xl ms-4"
+                            onClick={() => {
+                                setSearch("");
+                                setRole("all");;
+                            }}
+                        >
+                            Reset
+                        </Button>
+                        <Link href={route("admin.users.create")}>
                             <Button className="float-right w-fit rounded-xl shadow-none">
                                 Tambah
                             </Button>
@@ -171,7 +181,7 @@ export default function Index() {
                                             >
                                                 <Link
                                                     href={route(
-                                                        "users.edit",
+                                                        "admin.users.edit",
                                                         user.id_user,
                                                     )}
                                                 >
