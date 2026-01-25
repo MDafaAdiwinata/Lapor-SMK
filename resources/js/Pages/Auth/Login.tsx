@@ -148,9 +148,9 @@ export default function Login({
                 </div>
                 <div className="text-center text-sm">
                     Belum Punya Akun?
-                    <a href="#" className="ms-1 underline underline-offset-4">
+                    <Link href="/register" className="ms-1 underline underline-offset-4">
                         Daftar
-                    </a>
+                    </Link>
                 </div>
             </form>
         </GuestLayout>
