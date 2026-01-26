@@ -2,6 +2,8 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
 import { Transition } from "@headlessui/react";
 import { Link, useForm, usePage } from "@inertiajs/react";
 import { FormEventHandler } from "react";
@@ -32,26 +34,24 @@ export default function UpdateProfileInformation({
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-black">
+                <h2 className="text-lg font-medium text-foreground">
                     Informasi Profil
                 </h2>
 
-                <p className="mt-1 text-sm md:text-md text-black/80 font-light">
+                <p className="text-sm md:text-md text-foreground font-light">
                     Perbarui informasi profil akun dan alamat email Anda.
                 </p>
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="nama_user" value="Nama User" />
-
-                    <TextInput
+                    <InputLabel htmlFor="nama_user" value="Nama Lengkap" />
+                    <Input
                         id="nama_user"
                         className="mt-1 block w-full"
                         value={data.nama_user}
                         onChange={(e) => setData("nama_user", e.target.value)}
                         required
-                        isFocused
                         autoComplete="nama_user"
                     />
 
@@ -61,7 +61,7 @@ export default function UpdateProfileInformation({
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
 
-                    <TextInput
+                    <Input
                         id="email"
                         type="email"
                         className="mt-1 block w-full"
@@ -73,7 +73,7 @@ export default function UpdateProfileInformation({
                     <InputError className="mt-2" message={errors.email} />
                 </div>
 
-                {mustVerifyEmail && user.email_verified_at === null && (
+                {mustVerifyEmail === null && (
                     <div>
                         <p className="mt-2 text-sm text-gray-800">
                             Alamat email Anda belum terverifikasi.
@@ -98,7 +98,7 @@ export default function UpdateProfileInformation({
                 )}
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Simpan</PrimaryButton>
+                    <Button disabled={processing} variant="default" className="rounded-xl ms-auto">Simpan</Button>
 
                     <Transition
                         show={recentlySuccessful}
