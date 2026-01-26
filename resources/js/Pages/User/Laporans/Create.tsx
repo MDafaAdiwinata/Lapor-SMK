@@ -78,7 +78,7 @@ export default function Create({ kategoris }: CreateLaporanProps) {
             {/* kalo ada eror, tampilkan alert */}
             {Object.keys(errors).length > 0 && (
                 <Alert
-                    variant="destructive"
+                    variant="default"
                     className="mb-2 space-x-2 max-w-xl rounded-xl"
                 >
                     <CircleAlert />

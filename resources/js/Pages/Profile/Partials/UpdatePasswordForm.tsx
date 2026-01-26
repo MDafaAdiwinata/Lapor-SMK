@@ -2,6 +2,8 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
+import { Button } from '@/Components/ui/button';
+import { Input } from '@/Components/ui/input';
 import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
@@ -51,11 +53,11 @@ export default function UpdatePasswordForm({
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-black">
+                <h2 className="text-lg font-medium text-foreground">
                     Ubah Password
                 </h2>
 
-                <p className="mt-1 text-sm md:text-md text-black/80 font-light">
+                <p className="text-sm md:text-md text-foreground font-light">
                     Pastikan akun Anda menggunakan kata sandi yang panjang dan
                     acak agar tetap aman.
                 </p>
@@ -68,7 +70,7 @@ export default function UpdatePasswordForm({
                         value="Kata Sandi Saat Ini"
                     />
 
-                    <TextInput
+                    <Input
                         id="current_password"
                         ref={currentPasswordInput}
                         value={data.current_password}
@@ -89,7 +91,7 @@ export default function UpdatePasswordForm({
                 <div>
                     <InputLabel htmlFor="password" value="Buat Kata Sandi Baru" />
 
-                    <TextInput
+                    <Input
                         id="password"
                         ref={passwordInput}
                         value={data.password}
@@ -108,7 +110,7 @@ export default function UpdatePasswordForm({
                         value="Konfirmasi Kata Sandi"
                     />
 
-                    <TextInput
+                    <Input
                         id="password_confirmation"
                         value={data.password_confirmation}
                         onChange={(e) =>
@@ -126,7 +128,7 @@ export default function UpdatePasswordForm({
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Simpan</PrimaryButton>
+                    <Button variant="default" className="ms-auto rounded-xl" disabled={processing}>Simpan</Button>
 
                     <Transition
                         show={recentlySuccessful}
