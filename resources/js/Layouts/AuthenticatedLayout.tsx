@@ -16,6 +16,7 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/Components/ui/breadcrumb";
+import ThemeToggle from "@/Components/ThemeToggle";
 
 interface AuthenticatedLayoutProps {
     header?: ReactNode;
@@ -76,17 +77,20 @@ export default function AuthenticatedLayout({
                         )}
                     </div>
 
-                    {/* Kanan: Refresh Button */}
-                    <div className="pr-4">
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            className="rounded-xl w-full px-4 flex items-center justify-center"
-                            onClick={() => window.location.reload()}
-                        >
-                            <RefreshCcw className="h-4 w-4 transition-transform hover:rotate-180" />
-                            <span>Refresh</span>
-                        </Button>
+                    <div className="pr-4 flex items-center justify-center gap-2">
+                        {/* Kanan: Refresh Button */}
+                        <div className="flex items-center justify-center gap-2">
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="rounded-xl w-full px-4 flex items-center justify-center"
+                                onClick={() => window.location.reload()}
+                            >
+                                <RefreshCcw className="h-4 w-4 transition-transform hover:rotate-180" />
+                                <span>Refresh</span>
+                            </Button>
+                        </div>
+                        <ThemeToggle />
                     </div>
                 </header>
 
