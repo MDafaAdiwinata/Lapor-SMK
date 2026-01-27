@@ -4,7 +4,7 @@ import { Button } from "@/Components/ui/button";
 import { TextEffect } from "@/Components/ui/text-effect";
 import { AnimatedGroup } from "@/Components/ui/animated-group";
 import { HeroHeader } from "./header";
-import type { Variants } from "motion/react";
+import { motion, type Variants } from "motion/react";
 
 const transitionVariants: Variants = {
     hidden: {
@@ -84,7 +84,7 @@ export default function HeroSection() {
                                     as="h1"
                                     className="mx-auto mt-8 max-w-4xl text-balance text-5xl max-md:font-semibold md:text-7xl lg:mt-16 xl:text-[5.25rem]"
                                 >
-                                    Solusi Digital untuk Pelaporan Sekolah
+                                    Solusi Digital Pelaporan Sekolah
                                 </TextEffect>
                                 <TextEffect
                                     per="line"
@@ -100,20 +100,8 @@ export default function HeroSection() {
                                     terorganisir.
                                 </TextEffect>
 
-                                <AnimatedGroup
-                                    variants={{
-                                        container: {
-                                            visible: {
-                                                transition: {
-                                                    staggerChildren: 0.05,
-                                                    delayChildren: 0.5,
-                                                },
-                                            },
-                                        },
-                                        item: transitionVariants,
-                                    }}
-                                    className="mt-12 flex flex-col items-center justify-center gap-3 md:flex-row"
-                                >
+                                <div
+                                    className="mt-12 flex flex-col items-center justify-center gap-3 md:flex-row">
                                     <Button
                                         asChild
                                         size="lg"
@@ -138,7 +126,7 @@ export default function HeroSection() {
                                             </span>
                                         </Link>
                                     </Button>
-                                </AnimatedGroup>
+                                </div>
                             </div>
                         </div>
 
@@ -148,11 +136,11 @@ export default function HeroSection() {
                                     visible: {
                                         transition: {
                                             staggerChildren: 0.05,
-                                            delayChildren: 0.75,
+                                            delayChildren: 1.5,
                                         },
                                     },
                                 },
-                                ...transitionVariants,
+                                item: transitionVariants,
                             }}
                         >
                             <div className="mask-b-from-55% relative -mr-56 mt-8 overflow-hidden px-2 sm:mr-0 sm:mt-12 md:mt-20">
@@ -174,7 +162,7 @@ export default function HeroSection() {
                         </AnimatedGroup>
                     </div>
                 </section>
-                <section className="bg-background pb-16 pt-16 md:pb-32">
+                {/* <section className="bg-background pb-16 pt-16 md:pb-32">
                     <div className="group relative m-auto max-w-5xl px-6">
                         <div className="absolute inset-0 z-10 flex scale-95 items-center justify-center opacity-0 duration-500 group-hover:scale-100 group-hover:opacity-100">
                             <Link
@@ -263,7 +251,7 @@ export default function HeroSection() {
                             </div>
                         </div>
                     </div>
-                </section>
+                </section> */}
             </main>
         </>
     );
