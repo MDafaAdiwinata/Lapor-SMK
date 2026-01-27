@@ -13,7 +13,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserLaporanController;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome');
+    return Inertia::render('Index');
 });
 
 Route::middleware('auth')->group(function () {
