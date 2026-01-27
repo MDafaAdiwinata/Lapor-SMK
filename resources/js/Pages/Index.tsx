@@ -1,3 +1,4 @@
+import CallToAction from "@/Components/call-to-action";
 import ContentSection from "@/Components/content";
 import FeaturesSection from "@/Components/features";
 import HeroSection from "@/Components/hero-section";
@@ -10,6 +11,7 @@ const Index = () => {
             <HeroSection />
             <ContentSection />
             <FeaturesSection />
+            <CallToAction />
         </>
     );
 };

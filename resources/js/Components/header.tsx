@@ -1,6 +1,5 @@
 import { Link } from "@inertiajs/react";
-import { Logo, LogoIcon } from "@/Components/logo";
-import { GalleryVerticalEnd, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/Components/ui/button";
 import React from "react";
 import { cn } from "@/lib/utils";
