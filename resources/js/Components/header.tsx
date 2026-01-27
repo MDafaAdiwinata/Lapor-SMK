@@ -7,9 +7,9 @@ import { cn } from "@/lib/utils";
 import ThemeToggle from "./ThemeToggle";
 
 const menuItems = [
-    { name: "Beranda", href: "#link" },
-    { name: "Tentang", href: "#link" },
-    { name: "Fitur Sistem", href: "#link" },
+    { name: "Beranda", href: "#beranda" },
+    { name: "Tentang", href: "#tentang" },
+    { name: "Fitur Sistem", href: "#feature" },
     { name: "Kontak", href: "#link" },
 ];
 

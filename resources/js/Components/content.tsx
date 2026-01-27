@@ -43,7 +43,7 @@ const imageZoom: Variants = {
 
 export default function ContentSection() {
     return (
-        <section className="py-16 md:py-[200px]">
+        <section className="py-16 md:py-32 mt-[80px]" id="tentang">
             <motion.div
                 className="mx-auto max-w-7xl space-y-8 px-6 md:space-y-16"
                 variants={containerVariants}
