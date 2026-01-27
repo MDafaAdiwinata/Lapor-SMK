@@ -1,8 +1,9 @@
 import CallToAction from "@/Components/call-to-action";
 import ContentSection from "@/Components/content";
 import FeaturesSection from "@/Components/features";
+import FooterSection from "@/Components/footer";
 import HeroSection from "@/Components/hero-section";
-import { Head, Link } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 
 const Index = () => {
     return (
@@ -12,6 +13,7 @@ const Index = () => {
             <ContentSection />
             <FeaturesSection />
             <CallToAction />
+            <FooterSection />
         </>
     );
 };
