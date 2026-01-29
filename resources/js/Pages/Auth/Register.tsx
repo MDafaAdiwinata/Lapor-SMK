@@ -134,7 +134,7 @@ export default function Register() {
                                                 value={
                                                     data.password_confirmation
                                                 }
-                                                className="mt-1 block w-full"
+                                                className="block w-full"
                                                 autoComplete="new-password"
                                                 onChange={(e) =>
                                                     setData(
