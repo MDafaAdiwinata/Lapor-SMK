@@ -22,12 +22,12 @@ const links = [
 
 export default function FooterSection() {
     return (
-        <footer className="py-16 md:py-32">
+        <footer className="py-16 bg-[#f6f6f8] dark:bg-[#202020]">
             <div className="mx-auto max-w-7xl px-6">
                 <Link
                     href="/"
                     aria-label="go home"
-                    className="mx-auto block size-fit border text-2xl font-bold"
+                    className="mx-auto block size-fit text-2xl font-bold"
                 >
                     Lapor SMK
                 </Link>

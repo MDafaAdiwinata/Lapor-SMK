@@ -3,7 +3,7 @@ import { Link } from "@inertiajs/react";
 
 export default function CallToAction() {
     return (
-        <section className="py-16 md:py-32 border">
+        <section className="py-16 md:py-32">
             <div className="mx-auto max-w-7xl px-6">
                 <div className="text-center">
                     <h2 className="text-balance text-3xl font-semibold lg:text-5xl">
