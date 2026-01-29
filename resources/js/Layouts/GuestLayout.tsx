@@ -25,7 +25,7 @@ export default function Guest({ children }: PropsWithChildren) {
                 <img
                     src="storage/sekolahan.png"
                     alt="Image"
-                    className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+                    className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.8]"
                 />
             </div>
         </div>
