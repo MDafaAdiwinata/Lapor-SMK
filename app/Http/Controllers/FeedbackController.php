@@ -19,31 +19,66 @@ class FeedbackController extends Controller
 
     public function create()
     {
-        //
+        return Inertia::render('Admin/Feedbacks/Create');
     }
 
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_depan' => 'required|string',
+            'nama_belakang' => 'required|string',
+            'email' => 'required|email',
+            'subjek' => 'required|string|max:100',
+            'isi_feedback' => 'required|string',
+        ]);
+
+        Feedback::create([
+            'nama_depan' => $request->nama_depan,
+            'nama_belakang' => $request->nama_belakang,
+            'email' => $request->email,
+            'subjek' => $request->subjek,
+            'isi_feedback' => $request->isi_feedback,
+        ]);
+
+        return redirect()
+            ->route('admin.feedbacks.index')
+            ->with('message', 'Feedback Berhasil ditambahkan! 🥳');
     }
 
-    public function show(string $id)
+    public function edit(Feedback $feedback)
     {
-        //
+        return Inertia::render('Admin/Feedbacks/Edit', compact('feedback'));
     }
 
-    public function edit(string $id)
+    public function update(Request $request, Feedback $feedback)
     {
-        //
+        $request->validate([
+            'nama_depan' => 'required|string',
+            'nama_belakang' => 'required|string',
+            'email' => 'required|email',
+            'subjek' => 'required|string|max:100',
+            'isi_feedback' => 'required|string',
+        ]);
+
+        $feedback->update([
+            'nama_depan' => $request->nama_depan,
+            'nama_belakang' => $request->nama_belakang,
+            'email' => $request->email,
+            'subjek' => $request->subjek,
+            'isi_feedback' => $request->isi_feedback,
+        ]);
+
+        return redirect()
+            ->route('admin.feedbacks.index')
+            ->with('message', 'Feedback Berhasil diperbarui! 🎉');
     }
 
-    public function update(Request $request, string $id)
+    public function destroy(Feedback $feedback)
     {
-        //
-    }
+        $feedback->delete();
 
-    public function destroy(string $id)
-    {
-        //
+        return redirect()
+            ->route('admin.feedbacks.index')
+            ->with('message', 'Feedback Berhasil dihapus! 🗑️');
     }
 }

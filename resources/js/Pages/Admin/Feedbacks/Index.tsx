@@ -96,6 +96,7 @@ export default function Index() {
                                 <TableHead>No</TableHead>
                                 <TableHead>Nama Depan</TableHead>
                                 <TableHead>Nama Belakang</TableHead>
+                                <TableHead>Email</TableHead>
                                 <TableHead>Subjek</TableHead>
                                 <TableHead>Isi Feedback</TableHead>
                                 <TableHead className="text-right">
@@ -108,7 +109,7 @@ export default function Index() {
                             {filteredFeedbacks.length === 0 ? (
                                 <TableRow>
                                     <TableCell
-                                        colSpan={6}
+                                        colSpan={7}
                                         className="text-center text-muted-foreground pt-6"
                                     >
                                         Data tidak ditemukan
@@ -125,6 +126,9 @@ export default function Index() {
                                         </TableCell>
                                         <TableCell>
                                             {feedback.nama_belakang}
+                                        </TableCell>
+                                        <TableCell>
+                                            {feedback.email}
                                         </TableCell>
                                         <TableCell>{feedback.subjek}</TableCell>
                                         <TableCell>
