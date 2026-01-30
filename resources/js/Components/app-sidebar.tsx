@@ -9,7 +9,8 @@ import {
     Settings2,
     PieChart,
     GalleryVerticalEnd,
-    ChartBarStacked
+    ChartBarStacked,
+    MessageCircleQuestionMark,
 } from "lucide-react";
 
 import { NavMain } from "@/Components/nav-main";
@@ -35,13 +36,13 @@ const userNavData = {
         },
         {
             title: "Buat Laporan",
-            url: route('laporans.create'),
+            url: route("laporans.create"),
             icon: FileText,
             isActive: true,
         },
         {
             title: "Riwayat Laporan",
-            url: route('laporans.histori'),
+            url: route("laporans.histori"),
             icon: History,
             isActive: true,
         },
@@ -59,7 +60,7 @@ const adminNavData = {
         },
         {
             title: "Kelola User",
-            url: route('admin.users.index'),
+            url: route("admin.users.index"),
             icon: Users,
             isActive: true,
         },
@@ -73,6 +74,12 @@ const adminNavData = {
             title: "Kelola Laporan",
             url: "/admin/laporans",
             icon: FileText,
+            isActive: true,
+        },
+        {
+            title: "Kelola Feedback",
+            url: "/admin/feedbacks",
+            icon: MessageCircleQuestionMark,
             isActive: true,
         },
     ],
