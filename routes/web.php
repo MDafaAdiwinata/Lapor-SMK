@@ -8,6 +8,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserLaporanController;
@@ -48,6 +49,7 @@ Route::middleware(['auth', 'verified'])
         Route::resource('users', UserController::class);
         Route::resource('kategoris', KategoriController::class);
         Route::resource('laporans', LaporanController::class);
+        Route::resource('feedbacks', FeedbackController::class);
     });
 
 
