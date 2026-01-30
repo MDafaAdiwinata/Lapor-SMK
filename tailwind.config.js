@@ -14,8 +14,8 @@ export default {
     theme: {
     	extend: {
     		fontFamily: {
-    			google: [
-    				'Google Sans',
+    			jakarta: [
+    				'Jakarta Sans',
                     ...defaultTheme.fontFamily.sans
                 ]
     		},

@@ -40,8 +40,7 @@ export default function HeroSection() {
                         <div
                             aria-hidden
                             className="absolute inset-0 -z-20"
-                        >
-                        </div>
+                        ></div>
 
                         <div
                             aria-hidden
@@ -100,8 +99,7 @@ export default function HeroSection() {
                                     terorganisir.
                                 </TextEffect>
 
-                                <div
-                                    className="mt-12 flex flex-col items-center justify-center gap-3 md:flex-row">
+                                <div className="mt-12 flex flex-col items-center justify-center gap-3 md:flex-row">
                                     <Button
                                         asChild
                                         size="lg"
@@ -120,7 +118,7 @@ export default function HeroSection() {
                                         variant="ghost"
                                         className="rounded-xl px-5 text-base"
                                     >
-                                        <Link href="#link">
+                                        <Link href="#feature">
                                             <span className="text-nowrap">
                                                 Lihat Dashboard
                                             </span>

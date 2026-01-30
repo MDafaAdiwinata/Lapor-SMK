@@ -9,7 +9,8 @@ import {
     Settings2,
     PieChart,
     GalleryVerticalEnd,
-    ChartBarStacked
+    ChartBarStacked,
+    MessageCircleQuestionMark
 } from "lucide-react";
 
 import { NavMain } from "@/Components/nav-main";
@@ -73,6 +74,12 @@ const adminNavData = {
             title: "Kelola Laporan",
             url: "/admin/laporans",
             icon: FileText,
+            isActive: true,
+        },
+        {
+            title: "Kelola Feedback",
+            url: "/admin/feedbacks",
+            icon: MessageCircleQuestionMark,
             isActive: true,
         },
     ],
