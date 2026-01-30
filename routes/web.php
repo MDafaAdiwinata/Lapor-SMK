@@ -16,6 +16,10 @@ Route::get('/', function () {
     return Inertia::render('Index');
 });
 
+Route::get('/contact', function () {
+    return Inertia::render('Contact');
+});
+
 Route::middleware('auth')->group(function () {
     // Route default dashboard (akan redirect sesuai role)
     Route::get('/dashboard', function () {
