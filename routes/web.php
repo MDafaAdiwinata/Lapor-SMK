@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserFeedbackController;
 use App\Http\Controllers\UserLaporanController;
 
 Route::get('/', function () {
@@ -20,6 +21,8 @@ Route::get('/', function () {
 Route::get('/contact', function () {
     return Inertia::render('Contact');
 });
+
+Route::post('contact', [UserFeedbackController::class, 'store'])->name('contact.store');
 
 Route::middleware('auth')->group(function () {
     // Route default dashboard (akan redirect sesuai role)
