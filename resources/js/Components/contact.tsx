@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { Textarea } from "@/Components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/Components/ui/label";
 interface Contact2Props {
   title?: string;
   description?: string;

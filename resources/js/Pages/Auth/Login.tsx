@@ -1,7 +1,7 @@
 import InputError from "@/Components/InputError";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/Components/ui/label";
 import {
     Tooltip,
     TooltipContent,
@@ -136,7 +136,7 @@ export default function Login({
                                                 />
                                             </g>
                                         </svg>
-                                        Login with GitHub
+                                        Login with Google
                                     </Button>
                                 </span>
                             </TooltipTrigger>
