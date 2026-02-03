@@ -169,13 +169,13 @@ Silahkan daftar akun sendiri yh
 ## Screenshots
 
 ### Landing Page
-![Landing Page](public/storage/landingpage.png)
+![Landing Page](public/images/landingpage.png)
 
 ### Dashboard Admin
-![Dashboard Admin](public/storage/dashboardadmin.png)
+![Dashboard Admin](public/images/dashboardadmin.png)
 
 ### User Reports
-![User Reports](public/storage/dashboardsiswa.png)
+![User Reports](public/images/dashboardsiswa.png)
 
 ---
 
