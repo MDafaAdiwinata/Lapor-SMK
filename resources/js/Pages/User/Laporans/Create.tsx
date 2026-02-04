@@ -38,7 +38,7 @@ type CreateLaporanProps = {
 };
 
 export default function Create({ kategoris }: CreateLaporanProps) {
-    const [preview, setPreview] = useState<string>("/storage/noimage.png");
+    const [preview, setPreview] = useState<string>("/images/noimage.png");
     const { data, setData, post, processing, errors } = useForm({
         judul_laporan: "",
         isi_laporan: "",
@@ -58,7 +58,7 @@ export default function Create({ kategoris }: CreateLaporanProps) {
         post(route("user.laporans.store"), {
             forceFormData: true,
             onSuccess: () => {
-                setPreview("/storage/noimage.png");
+                setPreview("/images/noimage.png");
             },
         });
     };
@@ -128,7 +128,7 @@ export default function Create({ kategoris }: CreateLaporanProps) {
                                 if (file) {
                                     setPreview(URL.createObjectURL(file));
                                 } else {
-                                    setPreview("/storage/noimage.png");
+                                    setPreview("/images/noimage.png");
                                 }
                             }}
                         />
