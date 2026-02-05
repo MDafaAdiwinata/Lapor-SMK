@@ -111,12 +111,12 @@ export default function ContentSection() {
                     >
                         <div className="bg-linear-to-b aspect-67/34 relative rounded-2xl from-zinc-300 to-transparent p-px dark:from-zinc-700 dark:border dark:border-white/20">
                             <img
-                                src="/storage/aboutdark.png"
+                                src="https://res.cloudinary.com/dpur2sebv/image/upload/v1770252945/aboutdark_jghr4h.webp"
                                 className="hidden rounded-[15px] dark:block"
                                 alt="about dark"
                             />
                             <img
-                                src="/storage/about.png"
+                                src="https://res.cloudinary.com/dpur2sebv/image/upload/v1770252945/about_kixq5s.webp"
                                 className="rounded-[15px] shadow dark:hidden"
                                 alt="about light"
                             />

@@ -143,14 +143,18 @@ export default function HeroSection() {
                         >
                             <div className="mask-b-from-55% relative -mr-56 mt-8 overflow-hidden px-2 sm:mr-0 sm:mt-12 md:mt-20">
                                 <div className="inset-shadow-2xs ring-background dark:inset-shadow-white/20 bg-background relative mx-auto max-w-6xl overflow-hidden rounded-2xl border p-4 shadow-lg shadow-zinc-950/15 ring-1">
+
+                                    {/* Dark Image */}
                                     <img
                                         className="bg-background aspect-15/8 relative hidden rounded-2xl dark:block"
-                                        src="/storage/dashboardsiswadark.png"
+                                        src="https://res.cloudinary.com/dpur2sebv/image/upload/v1770252948/dashboardsiswadark_cymqf9.webp"
                                         alt="app screen"
                                     />
+
+                                    {/* Light Image */}
                                     <img
                                         className="z-2 border-border/25 aspect-15/8 relative rounded-2xl border dark:hidden"
-                                        src="/storage/dashboardsiswa.png"
+                                        src="https://res.cloudinary.com/dpur2sebv/image/upload/v1770252947/dashboardsiswa_bo5fpc.webp"
                                         alt="app screen"
                                         width="2700"
                                         height="1440"
