@@ -48,10 +48,12 @@ type EditLaporanProps = {
     kategoris: Kategori[];
 };
 
-
 export default function Edit({ laporan, users, kategoris }: EditLaporanProps) {
+    // Helper Coudinary Gambar
+    const cloudinaryBase = "https://res.cloudinary.com/dpur2sebv/image/upload/";
+
     const [preview, setPreview] = useState<string>(
-        laporan.image ? `/storage/${laporan.image}` : "/storage/noimage.png",
+        laporan.image ? cloudinaryBase + laporan.image : "/images/noimage.png",
     );
 
     const { data, setData, put, processing, errors } = useForm({
@@ -110,6 +112,8 @@ export default function Edit({ laporan, users, kategoris }: EditLaporanProps) {
 
                                 if (file) {
                                     setPreview(URL.createObjectURL(file));
+                                } else {
+                                    setPreview("/images/noimage.png");
                                 }
                             }}
                         />

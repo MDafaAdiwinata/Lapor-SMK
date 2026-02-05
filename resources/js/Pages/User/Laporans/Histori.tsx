@@ -271,11 +271,11 @@ export default function Index() {
                                             <img
                                                 src={
                                                     laporan.image
-                                                        ? `/storage/${laporan.image}`
-                                                        : "/storage/noimage.png"
+                                                        ? `https://res.cloudinary.com/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload/${laporan.image}`
+                                                        : "/images/noimage.png"
                                                 }
                                                 alt={laporan.judul_laporan}
-                                                className="h-20 w-20 rounded-lg object-cover mx-auto border"
+                                                className="w-14 h-14 md:w-24 md:h-24 rounded-lg object-cover mx-auto border"
                                             />
                                         </TableCell>
 

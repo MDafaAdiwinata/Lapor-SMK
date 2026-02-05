@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Models\Laporan;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class LaporanController extends Controller
@@ -31,31 +32,31 @@ class LaporanController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'judul_laporan' => 'required|string',
-            'isi_laporan' => 'required|string',
+        $validated = $request->validate([
+            'judul_laporan' => 'required|string|alpha_num',
+            'isi_laporan' => 'required|string|alpha_num',
             'tgl_laporan' => 'required|date',
-            'status' => 'required|in:pending,proses,selesai',
-            'id_user' => 'required|exists:users,id_user',
             'id_kategori' => 'required|exists:kategori,id_kategori',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // Upload image
-        $imagePath = null;
+        // Default Nilai
+        $validated['status'] = 'pending';
+        $validated['id_user'] = Auth::id();
+
+        // upload ke cloudinary
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('laporans', 'public');
+
+            $path = Storage::disk('cloudinary')->put(
+                'laporans',
+                $request->file('image')
+            );
+
+            $validated['image'] = $path;
+            $validated['image_public_id'] = $path;
         }
 
-        Laporan::create([
-            'judul_laporan' => $request->judul_laporan,
-            'isi_laporan' => $request->isi_laporan,
-            'tgl_laporan' => $request->tgl_laporan,
-            'status' => $request->status ?? 'pending',
-            'id_user' => $request->id_user,
-            'id_kategori' => $request->id_kategori,
-            'image' => $imagePath,
-        ]);
+        Laporan::create($validated);
 
         return redirect()
             ->route('admin.laporans.index')
@@ -74,39 +75,34 @@ class LaporanController extends Controller
 
     public function update(Request $request, Laporan $laporan)
     {
-        $request->validate([
+        $validated = $request->validate([
             'judul_laporan' => 'required|string|max:255',
-            'isi_laporan' => 'required|string',
-            'tgl_laporan' => 'required|date',
-            'status' => 'required|in:pending,proses,selesai',
+            'isi_laporan'   => 'required|string',
+            'tgl_laporan'   => 'required|date',
+            'status'        => 'required|in:pending,proses,selesai',
             'id_user' => 'required|exists:users,id_user',
-            'id_kategori' => 'required|exists:kategori,id_kategori',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'id_kategori'   => 'required|exists:kategori,id_kategori',
+            'image'         => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
-
-        $updateData = [
-            'judul_laporan' => $request->judul_laporan,
-            'isi_laporan' => $request->isi_laporan,
-            'tgl_laporan' => $request->tgl_laporan,
-            'status' => $request->status,
-            'id_user' => $request->id_user,
-            'id_kategori' => $request->id_kategori,
-        ];
 
         if ($request->hasFile('image')) {
 
             // hapus gambar lama
             if ($laporan->image) {
-                Storage::disk('public')->delete($laporan->image);
+                Storage::disk('cloudinary')->delete($laporan->image_public_id);
             }
 
-            // simpan gambar baru
-            $imagePath = $request->file('image')->store('laporans', 'public');
-            $updateData['image'] = $imagePath;
+            $path = Storage::disk('cloudinary')->put(
+                'laporans',
+                $request->file('image')
+            );
+
+            $validated['image'] = $path;
+            $validated['image_public_id'] = $path;
         }
 
         // update ke database
-        $laporan->update($updateData);
+        $laporan->update($validated);
 
         return redirect()
             ->route('admin.laporans.index')

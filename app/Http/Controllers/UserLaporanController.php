@@ -7,7 +7,11 @@ use Inertia\Inertia;
 use App\Models\Laporan;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class UserLaporanController extends Controller
 {
@@ -30,29 +34,35 @@ class UserLaporanController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'judul_laporan' => 'required|string|max:255',
-            'isi_laporan' => 'required|string',
-            'tgl_laporan' => 'required|date',
-            'id_kategori' => 'required|exists:kategori,id_kategori',
-            'image' => 'nullable|image|max:2048',
+            'isi_laporan'   => 'required|string',
+            'tgl_laporan'   => 'required|date',
+            'id_kategori'   => 'required|exists:kategori,id_kategori',
+            'image'         => 'nullable|image|max:2048',
         ]);
 
-        $data = $request->only([
-            'judul_laporan',
-            'isi_laporan',
-            'tgl_laporan',
-            'id_kategori',
-        ]);
+        // data wajib
+        $validated['id_user'] = Auth::id();
+        $validated['status'] = 'pending';
 
-        // ambil user login
-        $data['id_user'] = Auth::id();
+        // default null
+        $validated['image'] = null;
+        $validated['image_public_id'] = null;
 
+        // upload ke cloudinary
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('laporans', 'public');
+
+            $path = Storage::disk('cloudinary')->put(
+                'laporans',
+                $request->file('image')
+            );
+
+            $validated['image'] = $path;
+            $validated['image_public_id'] = $path;
         }
 
-        Laporan::create($data);
+        Laporan::create($validated);
 
         return redirect()
             ->route('laporans.histori')
