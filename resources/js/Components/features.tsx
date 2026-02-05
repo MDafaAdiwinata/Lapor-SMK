@@ -54,12 +54,12 @@ export default function FeaturesSection() {
                                 className="mask-b-from-75% mask-l-from-75% mask-b-to-95% mask-l-to-95% relative pr-3 pt-3"
                             >
                                 <img
-                                    src="/storage/featuredark.png"
+                                    src="https://res.cloudinary.com/dpur2sebv/image/upload/v1770252950/featuredark_lp50vr.webp"
                                     className="hidden dark:block w-full h-auto object-contain border border-white/20 rounded-2xl shadow-md"
                                     alt="feature dark"
                                 />
                                 <img
-                                    src="/storage/feature.png"
+                                    src="https://res.cloudinary.com/dpur2sebv/image/upload/v1770252947/feature_tdk0il.webp"
                                     className="dark:hidden w-full h-auto object-contain border border-black/10 rounded-2xl shadow-md"
                                     alt="feature light"
                                 />

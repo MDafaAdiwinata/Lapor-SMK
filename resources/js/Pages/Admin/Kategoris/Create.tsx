@@ -55,7 +55,7 @@ export default function Create() {
             )}
             <form
                 onSubmit={handleSubmit}
-                className="max-w-xl flex flex-col gap-4 md:gap-6"
+                className="max-w-xl flex flex-col gap-4 md:gap-6 pb-24 md:pb-0"
             >
                 {/* Nama */}
                 <div className="flex flex-col gap-1.5">

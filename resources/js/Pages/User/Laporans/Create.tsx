@@ -38,7 +38,7 @@ type CreateLaporanProps = {
 };
 
 export default function Create({ kategoris }: CreateLaporanProps) {
-    const [preview, setPreview] = useState<string>("/storage/noimage.png");
+    const [preview, setPreview] = useState<string>("/images/noimage.png");
     const { data, setData, post, processing, errors } = useForm({
         judul_laporan: "",
         isi_laporan: "",
@@ -58,7 +58,7 @@ export default function Create({ kategoris }: CreateLaporanProps) {
         post(route("user.laporans.store"), {
             forceFormData: true,
             onSuccess: () => {
-                setPreview("/storage/noimage.png");
+                setPreview("/images/noimage.png");
             },
         });
     };
@@ -103,7 +103,7 @@ export default function Create({ kategoris }: CreateLaporanProps) {
             )}
             <form
                 onSubmit={handleSubmit}
-                className="max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-12"
+                className="max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-12 pb-24 md:pb-0"
             >
                 {/* RIGHT COLUMN */}
                 <div className="space-y-2">
@@ -118,20 +118,25 @@ export default function Create({ kategoris }: CreateLaporanProps) {
                         />
 
                         {/* Input */}
-                        <Input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => {
-                                const file = e.target.files?.[0] || null;
-                                setData("image", file);
+                        <div className="w-full flex flex-col items-start gap-1">
+                            <Input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0] || null;
+                                    setData("image", file);
 
-                                if (file) {
-                                    setPreview(URL.createObjectURL(file));
-                                } else {
-                                    setPreview("/storage/noimage.png");
-                                }
-                            }}
-                        />
+                                    if (file) {
+                                        setPreview(URL.createObjectURL(file));
+                                    } else {
+                                        setPreview("/images/noimage.png");
+                                    }
+                                }}
+                            />
+                            <p className="text-sm text-muted-foreground ms-1">
+                                Gambar (PNG, JPG, JPEG, Max 2 MB!)
+                            </p>
+                        </div>
                     </div>
                 </div>
 

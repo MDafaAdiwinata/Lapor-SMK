@@ -69,11 +69,9 @@ export default function Register() {
                                         onChange={(e) =>
                                             setData("nama_user", e.target.value)
                                         }
-                                        required
                                     />
                                     <InputError
                                         message={errors.nama_user}
-                                        className="mt-2"
                                     />
                                 </Field>
                                 <Field>
@@ -90,11 +88,9 @@ export default function Register() {
                                         onChange={(e) =>
                                             setData("email", e.target.value)
                                         }
-                                        required
                                     />
                                     <InputError
                                         message={errors.email}
-                                        className="mt-2"
                                     />
                                 </Field>
                                 <Field>
@@ -116,11 +112,9 @@ export default function Register() {
                                                         e.target.value,
                                                     )
                                                 }
-                                                required
                                             />
                                             <InputError
                                                 message={errors.password}
-                                                className="mt-2"
                                             />
                                         </Field>
                                         <Field>
@@ -142,13 +136,11 @@ export default function Register() {
                                                         e.target.value,
                                                     )
                                                 }
-                                                required
                                             />
                                             <InputError
                                                 message={
                                                     errors.password_confirmation
                                                 }
-                                                className="mt-2"
                                             />
                                         </Field>
                                     </Field>

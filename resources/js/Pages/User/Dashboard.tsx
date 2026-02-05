@@ -74,9 +74,7 @@ export default function Dashboard({
                         <FileText className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">
-                            {stats.total}
-                        </div>
+                        <div className="text-2xl font-bold">{stats.total}</div>
                         <p className="text-xs text-muted-foreground">
                             Semua laporan yang pernah dibuat
                         </p>
@@ -91,9 +89,7 @@ export default function Dashboard({
                         <Clock className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">
-                            {stats.proses}
-                        </div>
+                        <div className="text-2xl font-bold">{stats.proses}</div>
                         <p className="text-xs text-muted-foreground">
                             Laporan dalam proses penanganan
                         </p>
@@ -209,11 +205,11 @@ export default function Dashboard({
                                                 <img
                                                     src={
                                                         laporan.image
-                                                            ? `/storage/${laporan.image}`
-                                                            : "/storage/noimage.png"
+                                                            ? `https://res.cloudinary.com/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload/${laporan.image}`
+                                                            : "/images/noimage.png"
                                                     }
                                                     alt={laporan.judul_laporan}
-                                                    className="h-20 w-20 rounded-lg object-cover mx-auto border"
+                                                    className="w-14 h-14 md:w-24 md:h-24 rounded-lg object-cover mx-auto border"
                                                 />
                                             </TableCell>
                                         </TableRow>

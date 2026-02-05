@@ -63,7 +63,7 @@ export default function Create() {
             )}
             <form
                 onSubmit={handleSubmit}
-                className="max-w-xl flex flex-col gap-4"
+                className="max-w-xl flex flex-col gap-4 pb-24 md:pb-0"
             >
                 {/* Nama */}
                 <div className="space-y-1">
