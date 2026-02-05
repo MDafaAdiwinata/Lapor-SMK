@@ -24,7 +24,7 @@ export default function Guest({ children }: PropsWithChildren) {
             </div>
             <div className="bg-muted relative hidden lg:block">
                 <img
-                    src="https://res.cloudinary.com/dpur2sebv/image/upload/v1770250571/sekolahan_gxuhd1.png"
+                    src="https://res.cloudinary.com/dpur2sebv/image/upload/v1770252952/sekolahan_r02se4.webp"
                     alt="Image"
                     className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.8]"
                 />

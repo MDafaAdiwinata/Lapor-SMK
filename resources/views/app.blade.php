@@ -8,7 +8,7 @@
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
     {{-- Web Icon --}}
-    <link rel="icon" type="image/png" href="{{ asset('/storage/favicon.png') }}" />
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dpur2sebv/image/upload/v1770252945/favicon_sposhc.webp" />
 
     {{-- Jakarta Sans Font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
